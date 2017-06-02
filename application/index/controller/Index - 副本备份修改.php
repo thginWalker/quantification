@@ -79,29 +79,58 @@ class Index extends Controller
                 // 3量化委员committee
                 // 4学生会studentunion
                 // 5门户维护员gateway
-          $this->judgeModel('student','Student',$name,$password,1);
+   //查找进行数据库验证
+          // public function judgeModel($db,$model,$name,$password)
+          // {
+          //     $db = model($model);
+          //     $selectModel = "select{$model}";
+          //       $result = $db->$selectModel($name,$password);
+          //       $this->judgeLogin($result);
+          // }
+          $this->judgeModel('student','Student',$name,$password);
+        // exit();
+                // $student = model('Student');
+                // $result = $student->selectStudent($name,$password);
+                // $this->judgeLogin($result);//判断是否登录成功
 
-            } elseif ($role == 1 || $role == 2) {//超级管理员
+            } elseif ($role == 1) {//超级管理员
 
             $this->judgeAdmin($name,$password,$role);
+                // $admin = model('Admin');
+                // $result = $admin->selectAdmin($name,$password,$role);
+                // $this->judgeLogin($result);//判断是否登录成功
+
+            } elseif ($role == 2) {//管理员
+
+              this->judgeAdmin($name,$password,$role);
+               //  $admin = model('Admin');
+               //  $result = $admin->selectAdmin($name,$password,$role);
+               // $this->judgeLogin($result);
 
             } elseif ($role == 3) {//量化委员
 
-               $this->judgeModel('committee','Committee',$name,$password,3);
+               $this->judgeModel('committee','Committee',$name,$password);
+               //  $committee = model('Committee');
+               //  $result = $committee->selectCommittee($name,$password);
+               // $this->judgeLogin($result);
 
             } elseif ($role == 4) {//学生会
 
-                $this->judgeModel('studentunion','Studentunion',$name,$password,4);
+                $this->judgeModel('studentunion','Studentunion',$name,$password);
+                // $studentunion = model('Studentunion');
+                // $result = $studentunion->selectStudentunion($name,$password);
+                // $this->judgeLogin($result);
 
             } elseif ($role == 5) {//门户维护员
 
-                $this->judgeModel('gateway','Gateway',$name,$password,5);
+                $this->judgeModel('gateway','Gateway',$name,$password);
+                // $gateway = model('Gateway');
+                // $result = $gateway->selectGateway($name,$password);
+                // $this->judgeLogin($result);
 
             }else{
-
               echo "非法登录";
               return false;
-
             }
 
             ///用户登录日志插件，记录IP端口及登录方式
@@ -110,13 +139,13 @@ class Index extends Controller
     }
 
           //查找进行数据库验证
-          public function judgeModel($db,$model,$name,$password,$role)
+          public function judgeModel($db,$model,$name,$password)
           {
 
               $db = model($model);
               $selectModel = "select{$model}";
-              $result = $db->$selectModel($name,$password);
-              $judge = $this->judgeLogin($result,$name,$role);
+                $result = $db->$selectModel($name,$password);
+                $this->judgeLogin($result);
 
           }
 
@@ -126,20 +155,17 @@ class Index extends Controller
 
                 $admin = model('Admin');
                 $result = $admin->selectAdmin($name,$password,$role);
-                $this->judgeLogin($result,$name,$role);//判断是否登录成功
+                $this->judgeLogin($result);//判断是否登录成功
 
-
-          }
-
-          //清除默认session值
-          public function clearSession()
-          {
-            Session::clear();
           }
 
           //设置登录session
-          public function setSession($name,$role)
+          public function setSession($name,$password)
           {
+              //////////////////////////////////////////////////////
+              ///测试代码，清空session
+              //////////////////////////////////////
+              // Session::clear();
 
                 //登录成功设置session
                 Session::set('name',$name);
@@ -151,32 +177,27 @@ class Index extends Controller
           public function judgeSession()
           {
 
-             if (Session::has('name') && Session::has('role')) {
+             if (Session::has('name') && Session::has('name')) {
                      echo "session设置成功";
-                     echo Session::get('name');
-                     echo "<hr/>";
-                     echo Session::get('role');
                      return true;
              } else {
                       echo "session设置失败";
-                     echo Session::get('name');
-                     echo "<hr/>";
-                     echo Session::get('role');
                       return false;
             }
           }
 
           //登录是否成功进行判断
-          public function judgeLogin($result,$name,$role)
+          public function judgeLogin($result)
           {
               if ($result) {
                   echo "登录成功";
                   var_dump($result);
-                $this->setSession($name,$role);//设置session
-                 $this->judgeSession();//判断是否设置session
+                 $this->judgeSession();//与session相关的操作
                 } else {
                   echo "登录失败";
                 }
           }
+
+
 
 }
