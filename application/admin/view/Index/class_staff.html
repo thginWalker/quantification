@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>班级人员管理</title>
+    <link rel="stylesheet" type="text/css" href="http://www.jeasyui.net/Public/js/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="http://www.jeasyui.net/Public/js/easyui/themes/icon.css">
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="http://www.jeasyui.net/Public/js/easyui/jquery.easyui.min.js"></script>
+
+{load href="/quantification/public/static/admin/js/jquery.edatagrid.js" /}
+{load href="/quantification/public/static/easyui/locale/easyui-lang-zh_CN.js" /}
+{load href="/quantification/public/static/admin/Index/class_staff.js" /}
+</head>
+
+
+<body>
+    <div style="margin-bottom:10px;padding:5px;" id="tb">
+        <a href="#" class="easyui-linkbutton"  data-options="iconCls:'icon-add',plain:true"  onclick="obj.add();">添加</a><!-- plain:true 按钮扁平化-->
+        <a href="#" class="easyui-linkbutton"  data-options="iconCls:'icon-edit',plain:true" onclick="obj.edit()">修改</a>
+        <a href="#" class="easyui-linkbutton"  data-options="iconCls:'icon-remove',plain:true" onclick="obj.remove()">删除</a>
+        <a href="#" class="easyui-linkbutton"  data-options="iconCls:'icon-save',plain:true"  onclick="obj.save()" style="display: none;" id="save">保存</a>
+        <a href="#" class="easyui-linkbutton"  data-options="iconCls:'icon-redo',plain:true"   onclick="obj.redo()" style="display: none;" id="redo">取消编辑</a>
+        <input type="hidden" id="classid" name="classid" value="{$classid}"><!--- 隐藏域传递ID-->
+    </div>
+    <table id="tt" class="easyui-datagrid" style="width:980px;">
+    </table>
+</body>
+</html>
+

@@ -3,7 +3,7 @@ namespace app\index\model;
 
 use think\Model;
 use think\Db;
-// use think\Request;
+use think\Session;
 
 class Admin extends Model
 {
@@ -17,8 +17,8 @@ class Admin extends Model
         $admin = Db::name('Admin');
         if ($role== 1) {/// role为1时为超级管理员
            $data = $admin
-                     ->where('number',$number)
-                    ->where('password',$password)
+                     ->where('ad_number',$number)
+                    ->where('ad_password',$password)
                     ->where('Id','eq',1)
                     ->find();//多条件查询，可以改善
                if ($data) {
@@ -30,11 +30,12 @@ class Admin extends Model
         } elseif ($role == 2) {//,2管理员班主任
             $admin = Db::name('Admin');
             $data = $admin
-                ->where('number',$number)
-                ->where('password',$password)
+                ->where('ad_number',$number)
+                ->where('ad_password',$password)
                 ->where('Id','<>',1)
                 ->find();//需指明id不能为1
             if ($data) {
+          Session::set('teacher_id',$data['Id']);//设置session，方便使用
                return true;
             } else {
                 return false;
@@ -42,20 +43,6 @@ class Admin extends Model
         }
     }
 
-    // public function addAdmin(){
-    //     //实例化model类
-    //     $admin = new Admin;
-    //     //向变量里赋值arrau表单值
-    //     $admin->data = input('post.');
-    //     $username = input('post.username');
-    //     $password = input('post.password');
 
-    //     //插入数据
-    //     if ($admin->save()) {
-    //         return true;
-    //     }else{
-    //         return false;
-    //     }
-    // }
 
 }

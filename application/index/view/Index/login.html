@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <!-- 导入header文件 -->
 
     <!-- 后期简化写法，先暂时引入 -->
@@ -11,129 +11,107 @@
 {load href="/quantification/public/static/easyui/locale/easyui-lang-zh_CN.js" /}
 
 <!-- 导入css文件 -->
-{load href="/quantification/public/static/index/css/login.css" /}
-{load href="/quantification/public/static/index/css/test.css" /}
+{load href="/quantification/public/static/index/css/index.css" /}
     <title>潍坊科技学院量化管理系统</title>
-
+    <link rel='icon' href='/quantification/public/static/index/img/logo.ico ' type=‘image/x-ico’ />
 </head>
 <body>
-<div class="headbg"></div>
-<div class="login">
-    <div class="logo"><img src="/quantification/public/static/index/img/lonin-logo.jpg" width="300" height="106" style=" margin-top:70px; "/></div>
-    <div class="line"></div>
-    <div class="input">
-        <div class="logo2"><img src="/quantification/public/static/index/img/l_titleemp.png" width="245" height="44" /></div>
-        <form action="{:url('index/login')}" name="login" method="post" >
-        <!-- autocomplete="off" -->
-            <div class="inpt">
-                <div class="text"><span>账&nbsp;&nbsp;号：</span><input name="username" type="text" autocomplete="off" class="user" /></div>
-                <div class="text" style="margin-top:9px;;"><span>密&nbsp;&nbsp;码：</span><input name="password" type="password"  class="pwd" /></div>
-                <div class="text" style="margin-top:9px;"><span>角&nbsp;&nbsp;色：</span><select name="role" class="role" id="role">
-                    <option value="0">学生</option>
-                    <option value="1">超级管理员</option>
-                    <option value="2">管理员</option>
-                    <option value="3">量化委员</option>
-                    <option value="4">学生会</option>
-                    <option value="5">门户维护员</option>
-                </select>
+<div id="container">
+<!-- 头部 -->
 
-                </div>
-                <div class="text" style="margin-top:14px; margin-top:12px;">
-                        <span>验证码：
-                    </span><input name="check"  type="text" id="check" class="code" maxlength="4" style=" width:48px;"/>
-                    <img src="{:captcha_src()}" alt="captcha" style="cursor:pointer" onclick="this.src='{:captcha_src()}?'+Math.random()" title="点击更换"/>
-                </div>
+    <!-- 中间 -->
+    <div id="main">
 
+        <div id="password">
+            <div id="logoin">量化系统登录</div>
+            <div id="content">
+            <!-- 登录框内的内容-->
+            <form  action="{:url('index/login')}" method="post">
+<!-- // 0学生
+// 1超级管理员admin
+// 2管理员admin
+// 3量化委员committee
+// 4学生会studentunion
+// 5门户维护员gateway -->
+            身　份：
+            <select name="role" id="user_status">
+                <option value="0">学生</option>
+                <option value="1">超级管理员</option>
+                <option value="2">管理员</option>
+                <option value="3">量化委员</option>
+                <option value="4">学生会</option>
+                <option value="5">门户维护员</option>
+            </select>
+            <br/>
+            帐　号：<br><input type="text" id="user_name" placeholder="请输入帐号" name="username"><br/>
+            密　码：<br><input type="password" id="user_password"  name="password"><br/>
+            <div id="test">
+            验证码：<br>
+                <div id="test_text">
+                    <input type="text" name="check" id="identify" placeholder="请输入验证码" style="background-color: rgb(0,0,0,0.5);">
+                </div>
+            <div id="identify_pic" onclick="test_click()"><img src="{:captcha_src()}" alt="captcha" style="cursor:pointer" onclick="this.src='{:captcha_src()}?'+Math.random()" title="点击更换"/></div>
             </div>
-            <div class="submit"><input name="login" type="submit" class="but" value=" " id="but" /></div>
-        </form>
+            <input type="submit" value="" id="button">
+            </form>
+            </div>
+        </div>
+            <div id="aside">
+
+                <p id="tit">飞翔</p>
+                青春飞扬 追求梦想<br/><br/>
+                我们相聚在农圣故里 文宗之乡<br/><br/>
+                精神家园 和谐阳光<br/><br/>
+                我们在您温暖的怀抱里快乐成长<br/><br/>
+                创业 敬业<br/><br/>
+                为报效祖国勇敢的担当<br/><br/>
+                    求是 求新<br/><br/>
+                为服务社会奋进的方向<br/>
+                ...
+            </div>
+
+
+<div class="banner-shadow"></div>
 
     </div>
+    <!-- 尾部 -->
+    <div id="footer"><br/><span>版权所有：潍坊科技学院&nbsp;&nbsp; 地址：山东省寿光市金光街1299号  &nbsp;&nbsp;技术支持：千行实验室 </span></div>
+
 </div>
-<div class="footbg">
-    <div class="copy">Powered by 千行信息科技有限公司</div>
+
 </body>
 </html>
 
-
-<script type="text/javascript">
-$(function(){
-
-    // //管理员帐号验证
-    // $('#username').validatebox({
-    //     required : true,
-    //     missingMessage : '请输入管理员帐号',
-    //     invalidMessage : '管理员帐号不得为空',
-    // });
-
-    // //管理员密码验证
-    // $('#password').validatebox({
-    //     required : true,
-    //     validType : 'length[6,30]',
-    //     missingMessage : '请输入管理员密码',
-    //     invalidMessage : '管理员密码不能低于6个字符',
-    // });
-
-    //  //验证码验证
-    // $('#check').validatebox({
-    //     required : true,
-    //     validType : 'length[1]',
-    //     missingMessage : '请输入验证码',
-    //     invalidMessage : '请正确输入验证码',
-    // });
-
-    // //加载时判断验证
-    // if (!$('#username').validatebox('isValid')) {
-    //     $('#username').focus();
-    // } else if (!$('#password').validatebox('isValid')) {
-    //     $('#password').focus();
-    // }
+<script>
+var modified = false;
+var user_name = false;
+document.getElementById("yanzheng").onfocus = function() {
+    if(!modified)
+        document.getElementById("yanzheng").value = "";
+};
+document.getElementById("yanzheng").onblur = function() {
+    if(!modified)
+        document.getElementById("yanzheng").value = "请输入验证码";
+};
+document.getElementById("yanzheng").onkeydown = function() {
+    modified = true;
+};
 
 
-    // //单击登录
-    // $('#but').click(function () {
-    //     alert('sddddddddddddddddddddddddddd');
-    //     console.log('test');
-    //     if (!$('#username').validatebox('isValid')) {
-    //         $('#username').focus();
-    //     } else if (!$('#password').validatebox('isValid')) {
-    //         $('#password').focus();
-    //     } else {
-
-    //         $.ajax({
-    //             url : "{:url('index/login')}",
-    //             type : 'post',
-    //             data : {
-    //                 username : $('#username').val(),
-    //                 password : $('#password').val(),
-    //                         role : $('#role').val(),
-    //                         check: $('#check').val()
-    //             },
-    //             beforeSend : function () {
-    //                 $.messager.progress({
-    //                     text : '正在登录中...',
-    //                 });
-    //             },
-    //             success : function (data) {
-    //                 alert('sdddddddddd');
-    //             //     $.messager.progress('close');
-    //             // var dataObj=eval("("+data+")");//转换为json对象
-    //             //     if (dataObj.code ==200) {
-
-    //             //         location.href = "{:url('Index/main')}";//需修改
-
-    //             //     } else {
-    //             //         $.messager.alert('登录失败！', '用户名或密码错误！', 'warning', function () {
-    //             //             $('#password').select();
-    //             //         });
-    //             //     }
-    //             }
-    //         });
-
-    //     }
-    // });
+document.getElementById("user_name").onfocus = function() {
+    if(!user_name)
+        document.getElementById("user_name").value = "";
+};
+document.getElementById("user_name").onblur = function() {
+    if(!user_name)
+        document.getElementById("user_name").value = "请输入帐号";
+};
+document.getElementById("user_name").onkeydown = function() {
+    user_name = true;
+};
 
 
-});
-
+function test_click(){
+    document.getElementById('yanzheng').value="";
+}
 </script>

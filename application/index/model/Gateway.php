@@ -15,8 +15,8 @@ class Gateway extends Model
     {
         $gateway = Db::name('Gateway');
         $data = $gateway
-                ->where('number',$number)
-                ->where('password',$password)
+                ->where('ga_number',$number)
+                ->where('ga_password',$password)
                 ->find();
         if ($data) {
            return true;
@@ -26,20 +26,6 @@ class Gateway extends Model
 
     }
 
-    // public function addAdmin(){
-    //     //实例化model类
-    //     $admin = new Admin;
-    //     //向变量里赋值arrau表单值
-    //     $admin->data = input('post.');
-    //     $username = input('post.username');
-    //     $password = input('post.password');
 
-    //     //插入数据
-    //     if ($admin->save()) {
-    //         return true;
-    //     }else{
-    //         return false;
-    //     }
-    // }
 
 }

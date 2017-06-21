@@ -15,8 +15,8 @@ class Student extends Model
     {
         $student = Db::name('Student');
         $data = $student
-                ->where('number',$number)
-                ->where('password',$password)
+                ->where('nt_number',$number)
+                ->where('nt_password',$password)
                 ->find();
         if ($data) {
            return true;
@@ -26,20 +26,6 @@ class Student extends Model
 
     }
 
-    // public function addAdmin(){
-    //     //实例化model类
-    //     $admin = new Admin;
-    //     //向变量里赋值arrau表单值
-    //     $admin->data = input('post.');
-    //     $username = input('post.username');
-    //     $password = input('post.password');
 
-    //     //插入数据
-    //     if ($admin->save()) {
-    //         return true;
-    //     }else{
-    //         return false;
-    //     }
-    // }
 
 }

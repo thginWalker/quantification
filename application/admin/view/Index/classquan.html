@@ -1,0 +1,61 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>班级量化管理</title>
+    <link rel="stylesheet" type="text/css" href="http://www.jeasyui.net/Public/js/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="http://www.jeasyui.net/Public/js/easyui/themes/icon.css">
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="http://www.jeasyui.net/Public/js/easyui/jquery.easyui.min.js"></script>
+{load href="/quantification/public/static/admin/js/jquery.edatagrid.js" /}
+{load href="/quantification/public/static/easyui/locale/easyui-lang-zh_CN.js" /}
+
+<!-- 使用详细视图，添加视图脚本文件 -->
+<script type="text/javascript" src="http://www.w3cschool.cc/try/jeasyui/datagrid-detailview.js"></script>
+{load href="/quantification/public/static/admin/Index/classquan.js" /}
+
+
+
+<body>
+    <div style="margin-bottom:10px;padding:5px;" id="tb">
+        <a href="#" class="easyui-linkbutton"  data-options="iconCls:'icon-add',plain:true"  onclick="obj.add();">添加</a><!-- plain:true 按钮扁平化-->
+        <a href="#" class="easyui-linkbutton"  data-options="iconCls:'icon-edit',plain:true" onclick="obj.edit()">修改</a>
+        <a href="#" class="easyui-linkbutton"  data-options="iconCls:'icon-remove',plain:true" onclick="obj.remove()">删除</a>
+        <a href="#" class="easyui-linkbutton"  data-options="iconCls:'icon-save',plain:true"  onclick="obj.save()" style="display: none;" id="save">保存</a>
+        <a href="#" class="easyui-linkbutton"  data-options="iconCls:'icon-redo',plain:true"   onclick="obj.redo()" style="display: none;" id="redo">取消编辑</a>
+        <input type="hidden" id="classid" name="classid" value="{$classid}"><!--- 隐藏域传递ID-->
+    </div>
+    <table id="tt" class="easyui-datagrid" style="width:980px;">
+    </table>
+</body>
+</html>
+
+
+<script type="text/javascript">
+$(function(){
+
+        $('#tt').datagrid({
+        view: detailview,
+        detailFormatter:function(index,row){
+            return '<div class="ddv" style="padding:5px 0">index,row</div>';
+        },
+        //当用户点击展开按钮('+')时，onExpandRow事件将被触发，所以我们可以写一些代码来加载ajax详细内容
+        onExpandRow: function(index,row){
+            var ddv = $(this).datagrid('getRowDetail',index).find('div.ddv');
+            ddv.panel({
+                border:false,
+                cache:false,
+                href:'studentDetails?studentid='+row.Id,
+                onLoad:function(){
+                    $('#dg').datagrid('fixDetailRowHeight',index);
+                }
+            });
+        //     'fixDetailRowHeight'方法来固定当详细内容加载时的行高度。
+            $('#dg').datagrid('fixDetailRowHeight',index);
+        }
+    });
+})
+
+
+</script>

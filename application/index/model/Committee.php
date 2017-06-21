@@ -15,8 +15,8 @@ class Committee extends Model
     {
         $committee = Db::name('Committee');
         $data = $committee
-                ->where('number',$number)
-                ->where('password',$password)
+                ->where('co_number',$number)
+                ->where('co_password',$password)
                 ->find();
         if ($data) {
            return true;
@@ -26,20 +26,6 @@ class Committee extends Model
 
     }
 
-    // public function addAdmin(){
-    //     //实例化model类
-    //     $admin = new Admin;
-    //     //向变量里赋值arrau表单值
-    //     $admin->data = input('post.');
-    //     $username = input('post.username');
-    //     $password = input('post.password');
 
-    //     //插入数据
-    //     if ($admin->save()) {
-    //         return true;
-    //     }else{
-    //         return false;
-    //     }
-    // }
 
 }

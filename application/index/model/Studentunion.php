@@ -15,8 +15,8 @@ class Studentunion extends Model
     {
         $studentunion = Db::name('Studentunion');
         $data = $studentunion
-                ->where('number',$number)
-                ->where('password',$password)
+                ->where('on_number',$number)
+                ->where('on_password',$password)
                 ->find();
         if ($data) {
            return true;
