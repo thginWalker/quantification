@@ -51,7 +51,7 @@ li{
                   <!--折叠菜单-->
                   <div id="aa" class="easyui-accordion" style="height:auto" >
                         <!--菜单项-->
-                        <div title="班级人员管理-详细" data-options="iconCls:'icon-edit'" style="padding:10px;">
+                        <div title="班级人员管理" data-options="iconCls:'icon-edit'" style="padding:10px;">
                               <ul>
                               <!-- 根据管理班级进行添加-->
                                 {volist name="grade" id="vo"}
@@ -61,7 +61,12 @@ li{
                         </div>
                          <div title="量化委员管理" data-options="iconCls:'icon-edit'">
                               <ul>
-                                    <li><a href="#" class="easyui-linkbutton" onclick="addTab('量化委员管理','Committee')">查看信息</a></li>
+                                <!-- 根据管理班级进行添加-->
+                                {volist name="grade" id="vo"}
+                                 <li><a href="#" class="easyui-linkbutton" onclick="addTab('{$vo.class}委员','Committee?id={$vo.Id}')">{$vo.class}</a></li>
+                                {/volist}
+                                </ul>
+                                 <!--    <li><a href="#" class="easyui-linkbutton" onclick="addTab('量化委员管理','Committee')">查看信息</a></li> -->
                               </ul>
 
                         </div>

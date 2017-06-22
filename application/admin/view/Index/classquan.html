@@ -11,51 +11,38 @@
 {load href="/quantification/public/static/admin/js/jquery.edatagrid.js" /}
 {load href="/quantification/public/static/easyui/locale/easyui-lang-zh_CN.js" /}
 
-<!-- 使用详细视图，添加视图脚本文件 -->
-<script type="text/javascript" src="http://www.w3cschool.cc/try/jeasyui/datagrid-detailview.js"></script>
+
 {load href="/quantification/public/static/admin/Index/classquan.js" /}
 
 
 
 <body>
-    <div style="margin-bottom:10px;padding:5px;" id="tb">
-        <a href="#" class="easyui-linkbutton"  data-options="iconCls:'icon-add',plain:true"  onclick="obj.add();">添加</a><!-- plain:true 按钮扁平化-->
-        <a href="#" class="easyui-linkbutton"  data-options="iconCls:'icon-edit',plain:true" onclick="obj.edit()">修改</a>
-        <a href="#" class="easyui-linkbutton"  data-options="iconCls:'icon-remove',plain:true" onclick="obj.remove()">删除</a>
-        <a href="#" class="easyui-linkbutton"  data-options="iconCls:'icon-save',plain:true"  onclick="obj.save()" style="display: none;" id="save">保存</a>
-        <a href="#" class="easyui-linkbutton"  data-options="iconCls:'icon-redo',plain:true"   onclick="obj.redo()" style="display: none;" id="redo">取消编辑</a>
+<div style="margin-bottom:10px;padding:5px;" id="tb">
+        <a href="#" class="easyui-linkbutton"  data-options="iconCls:'icon-edit',plain:true"  onclick="details()" id="edit">详情</a>
+        <span id="cd"></span>
+        <a href="#" class="easyui-linkbutton"  data-options="iconCls:'icon-save',plain:true"  onclick="edit()" style="display: none;" id="save">修改</a>
+        <a href="#" class="easyui-linkbutton"  data-options="iconCls:'icon-redo',plain:true"   onclick="redo()" style="display: none;" id="redo">取消编辑</a>
+    <div style="margin-bottom:10px;padding:5px;" id="tb"><!-- plain:true 按钮扁平化-->
         <input type="hidden" id="classid" name="classid" value="{$classid}"><!--- 隐藏域传递ID-->
     </div>
     <table id="tt" class="easyui-datagrid" style="width:980px;">
     </table>
+    <div id="win" class="easyui-window" title="量化详情" closed="true" style="width:500px;padding:25px;">
+<!-- //////////////////////////////////////////////// -->
+<div style="margin-bottom:10px;padding:5px;" id="tb">
+        <a href="#" class="easyui-linkbutton"  data-options="iconCls:'icon-add',plain:true"  onclick="obj.add();">添加</a><!-- plain:true 按钮扁平化-->
+        <a href="#" class="easyui-linkbutton"  data-options="iconCls:'icon-edit',plain:true" onclick="obj.edit()" id="wedit">修改</a>
+        <a href="#" class="easyui-linkbutton"  data-options="iconCls:'icon-remove',plain:true" onclick="obj.remove()" id="wremove">删除</a>
+        <a href="#" class="easyui-linkbutton"  data-options="iconCls:'icon-save',plain:true"  onclick="obj.save()" style="display: none;" id="wsave">保存</a>
+        <a href="#" class="easyui-linkbutton"  data-options="iconCls:'icon-redo',plain:true"   onclick="obj.redo()" style="display: none;" id="wredo">取消编辑</a>
+        <input type="hidden" id="classid" name="classid" value="{$classid}"><!--- 隐藏域传递ID-->
+    </div>
+<!-- //////////////////////////////////////// -->
+            <table id="pg" style="width:300px"></table>
+    </div>
+
 </body>
 </html>
 
 
-<script type="text/javascript">
-$(function(){
 
-        $('#tt').datagrid({
-        view: detailview,
-        detailFormatter:function(index,row){
-            return '<div class="ddv" style="padding:5px 0">index,row</div>';
-        },
-        //当用户点击展开按钮('+')时，onExpandRow事件将被触发，所以我们可以写一些代码来加载ajax详细内容
-        onExpandRow: function(index,row){
-            var ddv = $(this).datagrid('getRowDetail',index).find('div.ddv');
-            ddv.panel({
-                border:false,
-                cache:false,
-                href:'studentDetails?studentid='+row.Id,
-                onLoad:function(){
-                    $('#dg').datagrid('fixDetailRowHeight',index);
-                }
-            });
-        //     'fixDetailRowHeight'方法来固定当详细内容加载时的行高度。
-            $('#dg').datagrid('fixDetailRowHeight',index);
-        }
-    });
-})
-
-
-</script>

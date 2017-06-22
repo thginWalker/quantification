@@ -102,9 +102,46 @@ class Index extends Controller
     //量化委员管理
     public function Committee()
     {
+     $classid = input('get.id');//得到班级的id
+     $view = new View();
+     $view->assign('classid',$classid);
+    return $view->fetch('committee');
 
-    return $this->fetch('committee');
+   }
 
+   //量化委员详情
+   public function commDetails()
+   {
+        $classid = input('post.classid');//得到班级的id
+        // 通过班级id找到改班级的量化委员学生id
+      $committee = model('Committee');
+      $studentid = $committee->selectCommittee($classid);
+      //通过学生id找到学生信息
+      $student = model('Student');
+      $result = $student->queryStudent($studentid);
+      $result = $this->toJson($code = '200', $message = '数据正确', $result);
+      echo $result;
+   }
+
+   //量化委员列表
+   public function comBobox()
+   {
+       $classid = input('get.classid');//得到班级的id
+       $student = model('Student');
+       $result = $student->retrievecomBobox($classid);
+      $result = json_encode($result);
+      echo $result;
+   }
+
+   //修改量化委员
+   public function updatecomm()
+   {
+      $committeeid = input('post.committeeid');
+      $student_id = input('post.student_id');
+      $Committee = model('Committee');
+       $result = $Committee->updateCommittee($committeeid,$student_id);
+       $data = $this->toJson('200',  '数据正确', $result);
+      echo $data;
    }
 
 /////////////////////////////////////////////////////////////////////////////班级量化管理
@@ -154,18 +191,7 @@ class Index extends Controller
        }
        //根据分数进行排序
        if (isset($sortFo) && !empty($sortFo)  && $sortFo == 'fo_fraction') {
-
-                 $s=count($information);
-
-                  for ($i = 0; $i < $s; $i++) {
-                      for ($j = 0; $j < $s - $i - 1; $j++) {
-                          if ($information[$j]['fo_fraction'] < $information[$j + 1]['fo_fraction']) {
-                              $temp = $information[$j];
-                              $information[$j] = $information[$j + 1];
-                              $information[$j + 1] = $temp;
-                          }
-                      }
-                  }
+           $information = $studscoreinfo->SortArray($information,'fo_fraction');
        }
       $information = json_encode($information);
       $total = $student->countStudent($classid);
@@ -180,32 +206,30 @@ class Index extends Controller
    //学生量化详情
    public function studentDetails()
    {
-      $studentid = input('get.studentid');
+      $studentid = input('post.studentid');
       //通过studscoreinfo查找单个学生的详细量化原因
       $studscoreinfo = model('Studscoreinfo');
-       $studentDetails = $studscoreinfo->fractionDetails($studentid);
-      //将信息html标签化
-      $detailsHTML = $studscoreinfo->detailsHTML($studentDetails);
-      echo $detailsHTML;
-
+      $studentDetails = $studscoreinfo->fractionDetails($studentid);
+      $data = $this->toJson('200',  '数据正确', $studentDetails);
+      echo $data;
    }
 
    //添加班级量化管理//////////有问题
    public function addQuan()
    {
-
+echo "我是添加班级量化管理";
    }
 
    //修改班级量化管理////////有问题
    public function updateQuan()
    {
-
+echo "修改班级量化管理";
    }
 
-    //删除班级量化管理
+    //删除班级量化管理////////有问题
    public function deleteQuan()
    {
-
+echo "删除班级量化管理";
    }
 
 /////////////////////////////////////////////////////////////////////////每周量化管理
@@ -268,3 +292,4 @@ class Index extends Controller
     }
 
 }
+

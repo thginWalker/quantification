@@ -33,6 +33,21 @@ class Student extends Model{
         return $data;
     }
 
+    //为修改量化委员选择所有学生
+    public function retrievecomBobox($classid)
+    {
+      $data =  Db::name('Student')
+                     ->field('Id,nt_number,nt_name')
+                     ->where('classes_id','eq',$classid)
+                     ->select();
+      $result = [];
+      foreach ($data as $key => $value) {
+        $result[$key]['value'] = $value['Id'];
+        $result[$key]['text'] = "{$value['nt_name']}({$value['nt_number']})";
+      }
+       return $result;
+    }
+
     //查询条件记录学生selectStudent($page,$rows,$sort,$classid,$classid)
     public function selectStudent($classid)
     {

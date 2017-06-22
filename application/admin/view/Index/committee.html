@@ -10,21 +10,139 @@
 
 {load href="/quantification/public/static/admin/js/jquery.edatagrid.js" /}
 {load href="/quantification/public/static/easyui/locale/easyui-lang-zh_CN.js" /}
-{load href="/quantification/public/static/admin/Index/committee.js" /}
-</head>
 
+</head>
+<!-- <script type="text/javascript" src="/quantification/public/static/admin/Index/committee.js"></script> -->
 
 <body>
-    <div style="margin-bottom:10px;padding:5px;" id="tb">
-        <a href="#" class="easyui-linkbutton" onclick="obj.add();"  data-options="iconCls:'icon-add',plain:true">添加</a><!-- plain:true 按钮扁平化-->
-        <a href="#" class="easyui-linkbutton" onclick="obj.edit()"  data-options="iconCls:'icon-edit',plain:true">修改</a>
-        <a href="#" class="easyui-linkbutton" onclick="obj.remove()"  data-options="iconCls:'icon-remove',plain:true">删除</a>
-        <a href="#" class="easyui-linkbutton" onclick="obj.save()"  data-options="iconCls:'icon-save',plain:true" style="display: none;" id="save">保存</a>
-        <a href="#" class="easyui-linkbutton" onclick="obj.redo()"  data-options="iconCls:'icon-redo',plain:true" style="display: none;" id="redo">取消编辑</a>
-
+<div style="margin-bottom:10px;padding:5px;" id="tb">
+        <a href="#" class="easyui-linkbutton"  data-options="iconCls:'icon-edit',plain:true"  onclick="select()" id="edit">选择</a>
+        <span id="cd"></span>
+        <a href="#" class="easyui-linkbutton"  data-options="iconCls:'icon-save',plain:true"  onclick="edit()" style="display: none;" id="save">修改</a>
+        <a href="#" class="easyui-linkbutton"  data-options="iconCls:'icon-redo',plain:true"   onclick="redo()" style="display: none;" id="redo">取消编辑</a>
+        <input type="hidden" id="classid" name="classid" value="{$classid}"><!--- 隐藏域传递ID-->
+        <input type="hidden" id="committeeid" name="committeeid" value=""><!--- 隐藏域传递ID-->
     </div>
-    <table id="tt" class="easyui-datagrid" style="width:980px;">
-    </table>
+
+    <table id="pg" style="width:300px"></table>
 </body>
 </html>
 
+<script type="text/javascript">
+
+
+
+
+
+
+
+
+
+
+ //选择
+  function select(){
+  $("#save,#redo").toggle();//显示和隐藏
+  $('#cd').empty();
+    $('#cd').append('<input id="cc" name="dept" value="----">');
+
+    $('#cc').combobox({
+    url:'comBobox?classid='+$('#classid').val(),
+    valueField:'id',
+    textField:'text'
+    });
+
+  }
+
+  //修改
+  function edit(){
+
+     $.ajax({
+                   type: "post",
+                   url: "updateComm",
+                   data: {
+                  student_id: $("#cc").val(),//获取下拉框有问题
+                  committeeid:$('#committeeid').val(),
+                            },
+                    dataType: "json",
+                      success : function (data) {
+                        $("#save,#redo").toggle();//显示和隐藏
+                        console.log(data);
+
+                          if (data) {
+                            $.messager.show({
+                              title : '提示',
+                              msg : '所选用户被删除成功！',
+                            });
+                           }
+                      },
+                  });
+
+  }
+
+
+  //取消编辑
+  function redo(){
+  $("#save,#redo").hide();//显示和隐藏
+
+  }
+
+
+
+$(function(){
+
+
+
+
+  $('#cc').hide();
+
+//////////////////////////////////////////////////ajax预加载
+                   $.ajax({
+                   type: "post",
+                   url: 'commDetails',
+                   data: {
+                 classid: $('#classid').val()
+                            },
+                    dataType: "json",
+                      success : function (data) {
+                              if (data.code == '200') {
+                               var data = data.data;
+                              //属性表格
+                              $('#pg').propertygrid({
+                            showGroup: true,
+                            scrollbarSize: 0,
+                            columns:[[
+                                {
+                                  field:'name',title:'属性',width:150,resizable:true
+                                },
+                                {
+                                  field:'value',title:'取值',width:150,resizable:true
+                                }
+                                ]]
+                          });
+                            $('#pg').datagrid('loadData',{total:0,rows:[]});//清空数据
+
+            var rows = [
+                {"name":"学号","value":data.nt_number,"group":"量化委员信息","editor":"text"},
+                {"name":"姓名","value":data.nt_name,"group":"量化委员信息","editor":"text"},
+                {"name":"性别","value":data.nt_sex,"group":"量化委员信息","editor":"text"},
+                {"name":"身份证号码","value":data.nt_idnumber,"group":"量化委员信息","editor":"text"},
+                {"name":"备注","value":data.nt_remarks,"group":"量化委员信息","editor":"text"}
+                ];
+
+                            $('#pg').propertygrid('loadData', rows);
+                            //添加一个隐藏id的隐藏域
+                            $('#committeeid').val(data.Id);
+                      }
+
+                    },
+
+                  });
+//////////////////////////////////////////////////ajax预加载
+
+
+
+});
+
+
+
+</script>

@@ -50,45 +50,28 @@ class Studscoreinfo extends Model{
           $studentDetails[$key]['fo_reason'] = $value['fo_reason'];//加分原因
           $studentDetails[$key]['fo_remarks'] = $value['fo_remarks'];//加分备注
 
-        }//需要根据加分时间排序
-
-        var_dump($studentDetails);
-exit();
-
-          return $studentDetails;
+        }
+        //需要根据加分时间排序
+        $studentDetails = $this->SortArray($studentDetails,'fo_time');
+        return $studentDetails;
     }
 
-    //将学生信息HTML标签化
-    public function detailsHTML($studentDetails)
+
+
+    //按照数组要求进行排序//按大到小
+    public function SortArray($array,$field)
     {
-      $HTMLstr = '<table class="dv-table" border="1" style="width:100%;padding:10px;background:#ccc">';
-
-      foreach ($studentDetails as $key => $value) {
-        $number = $key+1;
-         $HTMLstr = $HTMLstr."
-         <tr>
-         <td align=\"center\"  colspan=\"4\">量化信息{$number}</td>
-         </tr>
-          <tr>
-          <td class=\"dv-label\" width=\"60\">加分时间: </td>
-          <td  width=\"80\" text-align=\"left\">{$value['fo_time']}</td>
-          <td class=\"dv-label\" width=\"60\">加分分数:</td>
-          <td  width=\"80\" text-align=\"left\">{$value['fo_fraction']}</td>
-          </tr>
-          <tr>
-          <td class=\"dv-label\" width=\"60\">加分原因:</td>
-          <td width=\"80\" text-align=\"left\">{$value['fo_reason']}</td>
-          <td class=\"dv-label\">加分备注:</td>
-          <td width=\"80\" text-align=\"left\">{$value['fo_remarks']}</td>
-      </tr>";
-
-      }
-      $HTMLstr = $HTMLstr."</table>";
-      return $HTMLstr;
+        for ($i = 0; $i < count($array); $i++) {
+                      for ($j = 0; $j < count($array) - $i - 1; $j++) {
+                          if ($array[$j][$field] < $array[$j + 1][$field]) {
+                              $temp = $array[$j];
+                              $array[$j] = $array[$j + 1];
+                              $array[$j + 1] = $temp;
+                          }
+                      }
+       }
+       return $array;
     }
-
-
-
 
 
 
