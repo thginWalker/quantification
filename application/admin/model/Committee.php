@@ -23,10 +23,11 @@ class Committee extends Model{
     }
 
     //修改量化委员
-    public function updateCommittee($committeeid,$student_id)
+    public function updateCommittee($classid,$student_id)
     {
+
         $committee =  Db::table('Committee');
-       $data = $committee->where('Id', $committeeid)
+       $data = $committee->where('classes_id', $classid)
                             ->update([
                                 'student_id' => $student_id,
                                 ]);

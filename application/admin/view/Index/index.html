@@ -80,7 +80,7 @@ li{
                               </ul>
 
                         </div>
-                        <div title="每周量化管理" data-options="iconCls:'icon-edit'" style="padding:10px;">
+                        <div title="上周量化管理" data-options="iconCls:'icon-edit'" style="padding:10px;">
                               <ul>
                                 <!-- 根据管理班级进行添加-->
                                 {volist name="grade" id="vo"}
@@ -89,7 +89,7 @@ li{
                                     <!-- <li><a href="#" class="easyui-linkbutton" onclick="addTab('量化信息','weeklyQuantification')">一周量化趋势</a></li> -->
                              </ul>
                         </div>
-                        <div title="每月量化管理" data-options="iconCls:'icon-edit'" style="padding:10px;">
+                        <div title="上月量化管理" data-options="iconCls:'icon-edit'" style="padding:10px;">
                               <ul>
                                {volist name="grade" id="vo"}
                                  <li><a href="#" class="easyui-linkbutton" onclick="addTab('{$vo.class}每月','monthlyQuantification?id={$vo.Id}')">{$vo.class}</a></li>

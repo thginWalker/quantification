@@ -53,6 +53,10 @@ class Studscoreinfo extends Model{
         }
         //需要根据加分时间排序
         $studentDetails = $this->SortArray($studentDetails,'fo_time');
+        //将时间有时间戳转换成时间格式
+        foreach ($studentDetails as $key => $value) {
+          $studentDetails[$key]['fo_time'] = date("Y年m月d日",$value['fo_time']);
+        }
         return $studentDetails;
     }
 
@@ -72,6 +76,55 @@ class Studscoreinfo extends Model{
        }
        return $array;
     }
+
+
+    //通过学生id并通过量化表上周量化信息
+    public function weeklyQuan($studentid)
+    {
+      //php获取上周开始时间戳
+        $beginLastweek=mktime(0,0,0,date('m'),date('d')-date('w')+1-7,date('Y'));
+      //php获取上周结束时间戳
+        $endLastweek=mktime(23,59,59,date('m'),date('d')-date('w')+7-7,date('Y'));
+
+      $weekData = [0,0,0,0,0,0,0];//存储每周成绩
+
+      foreach ($studentid as $key => $value) {
+        $data = Db::table('Studscoreinfo')
+                              ->where('student_id',$studentid[$key])
+                              ->select();
+
+        foreach ($data as $datakey => $datavalue) {
+          //判断时间
+          if ($datavalue['fo_time'] >$beginLastweek  &&  $datavalue['fo_time'] <$endLastweek) {//星期一-6
+                    for ($i = 0; $i < 7; $i++) {
+                          if (
+                            $datavalue['fo_time']>mktime(0,0,0,date('m'),date('d')-date('w')-6+$i,date('Y'))
+                            &&
+                            $datavalue['fo_time']<mktime(0,0,0,date('m'),date('d')-date('w')-5+$i,date('Y'))
+                            ) {
+                            $weekData[$i] += $datavalue['fo_fraction'];
+                          }
+                    }
+
+          }
+
+        }
+      }
+return $weekData;
+
+    }
+
+
+        //通过学生id并通过量化表上月量化信息
+    public function monthlyQuan($studentid)
+    {
+    echo '<br>上月起始时间:<br>';
+    echo date("Y-m-d H:i:s",mktime(0, 0 , 0,date("m")-1,1,date("Y"))),"\n";
+    echo date("Y-m-d H:i:s",mktime(23,59,59,date("m") ,0,date("Y"))),"\n";
+
+      $weekData = [0,0,0,0,0,0,0];//存储每月成绩
+
+  }
 
 
 

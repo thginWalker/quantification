@@ -82,6 +82,33 @@
 </body>
 </html>
 
+
+<script type="text/javascript">
+    $('#button').click(function(){
+             $.ajax({
+                   type: "post",
+                   url: "login",
+                   data: {
+                  name: $("#user_name").val(),
+                 password:$("#user_password").val(),
+                    role:$("#user_status").val(),
+                    check:$('#identify').val()
+                            },
+                    dataType: "json",
+                      success : function (data) {
+
+                      },
+                  });
+
+
+
+
+    })
+
+
+
+
+</script>
 <script>
 var modified = false;
 var user_name = false;
