@@ -9,6 +9,54 @@ use think\Db;
 class Studscoreinfo extends Model{
     //设置当前模型对应的完整数据表名称
     protected $table = 'Studscoreinfo';
+/////////////////////////////////////////////////////////////////////////////////////
+    //添加量化信息
+    public function addStudscoreinfo($studentid,$time,$fraction,$reason,$remarks)
+    {
+      $data['student_id'] = $studentid;//此处获得student_id
+      $data['fo_time'] = $time;
+      $data['fo_fraction'] = $fraction;
+      $data['fo_reason'] = $reason;
+      $data['fo_remarks'] = $remarks;
+       $Studscoreinfo = Db::table('Studscoreinfo');
+       $result = $Studscoreinfo->insert($data);
+       if ($result) {
+           return $result;
+       } else {
+           return false;
+       }
+    }
+//////、、、、、、、、、、、、、、、、、、、
+    //修改量化信息
+    public function updateStudscoreinfo($id,$studentid,$time,$fraction,$reason,$remarks)
+    {
+       $Studscoreinfo =  Db::table('Studscoreinfo');
+       $data = $Studscoreinfo->where('Id', $id)
+                            ->update([
+                                'student_id' => $studentid,
+                                'fo_time' => $time,
+                                'fo_fraction' => $fraction,
+                                'fo_reason' =>$reason,
+                                'fo_remarks' => $remarks
+                                ]);
+
+       if ($data) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+///////////////////////////////////////////////////////////////////////
+    //删除量化信息
+    public function deleteStudscoreinfo($ids)
+    {
+      $data = Studscoreinfo::destroy($ids);
+        if ($data) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     //获取相应学生的量化成绩studscoreinfo//累计添加
     public function selectFraction($information)
@@ -45,6 +93,8 @@ class Studscoreinfo extends Model{
         $studentDetails = [];
         foreach ($data as $key => $value) {
          // $studentDetails[$key]['fo_time'] = date("Y年m月d日",$value['fo_time']);////加分时间先不转化成日期格式，先排序
+          $studentDetails[$key]['Id'] = $value['Id'];
+          $studentDetails[$key]['student_id'] = $studentid;
           $studentDetails[$key]['fo_time'] = $value['fo_time'];
           $studentDetails[$key]['fo_fraction'] = $value['fo_fraction'];//加分分数
           $studentDetails[$key]['fo_reason'] = $value['fo_reason'];//加分原因

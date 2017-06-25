@@ -218,29 +218,65 @@ class Index extends Controller
       echo $data;
    }
 
-   //添加班级量化管理//////////有问题
+
+
+   //添加量化信息
    public function addQuan()
    {
-echo "我是添加班级量化管理";
+        $studentid = input('post.studentid');
+        $time = input('post.time');
+        $fraction = input('post.fraction');
+        $reason = input('post.reason');
+        $remarks = input('post.remarks');
+        $studscoreinfo = model('Studscoreinfo');
+        $result = $studscoreinfo->addStudscoreinfo($studentid,strtotime($time),$fraction,$reason,$remarks);
+        $data = $this->toJson('200',  '数据正确', $result);
+        echo $data;
    }
 
-   //修改班级量化管理////////有问题
+   //修改量化信息
    public function updateQuan()
    {
-echo "修改班级量化管理";
+        $id = input('post.Id');
+        $studentid  = input('post.studentid');
+        $time = input('post.time');
+        $fraction = input('post.fraction');
+        $reason = input('post.reason');
+        $remarks = input('post.remarks');
+        $studscoreinfo = model('Studscoreinfo');
+        $result = $studscoreinfo->updateStudscoreinfo($id,$studentid,strtotime($time),$fraction,$reason,$remarks);
+        $data = $this->toJson('200',  '数据正确', $result);
+        echo $data;
+      //echo "修改班级量化管理";
    }
 
-    //删除班级量化管理////////有问题
+    //删除量化信息
    public function deleteQuan()
    {
-echo "删除班级量化管理";
+    $ids = input('post.ids');
+    $studscoreinfo = model('Studscoreinfo');
+    $result = $studscoreinfo->deleteStudscoreinfo($ids);
+    $data = $this->toJson('200',  '数据正确', $result);
+    echo $data;
    }
 
 /////////////////////////////////////////////////////////////////////////每周量化管理
    //每周量化管理
    public function weeklyQuantification()
    {
-      $classid = input('get.id');//得到班级的id
+
+       $classid = input('get.id');//得到班级的id
+       $view = new View();
+       $view->assign('classid',$classid);
+      return $view->fetch('weeklyquan');
+
+   }
+
+  //每周量化详情
+   public function weeklyDetails()
+   {
+      ////////////////////////////////////////////////////////////////////////////
+      $classid = input('post.id');//得到班级的id
       //通过班级id获取本班学生的每周量化管理
       $student = model('Student');//量化表
       $data = $student->selectStudent($classid);
@@ -251,14 +287,10 @@ echo "删除班级量化管理";
 
        $studscoreinfo = model('Studscoreinfo');//量化表
       $result = $studscoreinfo->weeklyQuan($studentid);
-      $view = new View();
-      $view->assign('result',$result);
-    return $view->fetch('weeklyquan');
+    echo $result;
 
 
    }
-
-
 
 
 
@@ -285,13 +317,12 @@ echo "删除班级量化管理";
       $view = new View();
       $view->assign('result',$result);
 
-
-
-
     return $this->fetch('monthlyquan');
 
 
    }
+
+
 
 
 
