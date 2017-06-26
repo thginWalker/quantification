@@ -27,6 +27,7 @@
          success : function(result) {
              //请求成功时执行该函数内容，result即为服务器返回的json对象
              var nums = [];
+             console.log(result);
              if (result) {
 
                     for(var i=0;i<result.length;i++){
@@ -39,42 +40,43 @@
 
         // 指定图表的配置项和数据
         var option = {
-    title : {
-        text: '每月量化情况',
+            title : {
+                text: '每月量化情况',
 
-        x:'left'
-    },
-    tooltip : {
-        trigger: 'item',
-        formatter: "{a} <br/>{b} : {c} ({d}%)"
-    },
-    legend: {
-        orient: 'vertical',
-        left: 'left',
-        data: ['第一周','第二周','第三周','第四周']
-    },
-    series : [
-        {
-            name: '本月量化情况',
-            type: 'pie',
-            radius : '55%',
-            center: ['50%', '60%'],
-            data:[
-                {value:335, name:'第一周'},
-                {value:310, name:'第二周'},
-                {value:234, name:'第三周'},
-                {value:135, name:'第四周'},
+                x:'left'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: ['第一周','第二周','第三周','第四周']
+            },
+            series : [
+                {
+                    name: '本月量化情况',
+                    type: 'pie',
+                    radius : '55%',
+                    center: ['50%', '60%'],
+                    data:[
 
-            ],
-            itemStyle: {
-                emphasis: {
-                    shadowBlur: 10,
-                    shadowOffsetX: 0,
-                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        {value:nums[0], name:'第一周'},
+                        {value:nums[1], name:'第二周'},
+                        {value:nums[2], name:'第三周'},
+                        {value:nums[3], name:'第四周'},
+
+                    ],
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
                 }
-            }
-        }
-    ]
+            ]
 };
 
 
@@ -89,9 +91,11 @@
 
 
          error : function(errorMsg) {
-             //请求失败时执行该函数
-         alert("图表请求数据失败!");
-         myChart.hideLoading();
+         //     //请求失败时执行该函数
+       //  alert("图表请求数据失败!");
+         //myChart.hideLoading();
+
+
          }
 
     })

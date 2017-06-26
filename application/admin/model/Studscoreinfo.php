@@ -143,6 +143,8 @@ class Studscoreinfo extends Model{
                               ->where('student_id',$studentid[$key])
                               ->select();
 
+        if ($data) {
+        ////////////////////////////////////////////////////////////////////////////////////////////////
         foreach ($data as $datakey => $datavalue) {
           //判断时间
           if ($datavalue['fo_time'] >$beginLastweek  &&  $datavalue['fo_time'] <$endLastweek) {//星期一-6
@@ -159,6 +161,9 @@ class Studscoreinfo extends Model{
           }
 
         }
+        ////////////////////////////////////////////////////////////////////////////////////////////////
+        }
+
       }
 return $weekData;
 
@@ -171,34 +176,71 @@ return $weekData;
         //通过学生id并通过量化表上月量化信息
     public function monthlyQuan($studentid)
     {
-      //本月刚开始的时间戳
-    $beginLastmonthly = date("Y-m-d H:i:s",mktime(0, 0 , 0,date("m")-1,1,date("Y")));
-    //本月结束时间戳
-      $endThismonthly =mktime(23,59,59,date('m'),date('t'),date('Y'));
-    echo date("Y-m-d H:i:s",mktime(0, 0 , 0,date("m")-1,1,date("Y"))),"\n";
+
+$m = date('Y-m-d', mktime(0,0,0,date('m')-1,1,date('Y'))); //上个月的开始日期
+
+$t = date('t',strtotime($m)); //上个月共多少天
+
+
+    //上月刚开始的时间戳
+    $beginLastmonthly = mktime(0,0,0,date('m')-1,1,date('Y'));
+    //上月刚结束的时间戳
+      $endThismonthly = mktime(0,0,0,date('m')-1,$t,date('Y'));
+
+        $dataweek = [0,0,0,0];//记录一个月四个周的成绩
           foreach ($studentid as $key => $value) {
         $data = Db::table('Studscoreinfo')
                               ->where('student_id',$studentid[$key])
                               ->select();
 
-        foreach ($data as $datakey => $datavalue) {
-          //判断时间
-          if ($datavalue['fo_time'] >$beginLastweek  &&  $datavalue['fo_time'] <$endLastweek) {//星期一-6
-                    for ($i = 0; $i < 7; $i++) {
-                          if (
-                            $datavalue['fo_time']>mktime(0,0,0,date('m'),date('d')-date('w')-6+$i,date('Y'))
-                            &&
-                            $datavalue['fo_time']<mktime(0,0,0,date('m'),date('d')-date('w')-5+$i,date('Y'))
-                            ) {
-                            $weekData[$i] += $datavalue['fo_fraction'];
-                          }
-                    }
 
+          if ($data) {
+            ///////////////////////////////////////////////////////////////////////////
+                    foreach ($data as $datakey => $datavalue) {
+          //判断时间
+          if ($datavalue['fo_time'] >$beginLastmonthly  &&  $datavalue['fo_time'] <$endThismonthly) {//星期一-6
+                    for ($i = 0; $i < 28; $i++) {
+
+                          if (
+                            $datavalue['fo_time']>mktime(0,0,0,date('m')-1,1,date('Y'))
+                            &&
+                            $datavalue['fo_time']<mktime(0,0,0,date('m')-1,8,date('Y'))
+                            ) {
+                            $dataweek[0] += $datavalue['fo_fraction'];
+                          }elseif
+                          (
+                            $datavalue['fo_time']>mktime(0,0,0,date('m')-1,8,date('Y'))
+                            &&
+                            $datavalue['fo_time']<mktime(0,0,0,date('m')-1,15,date('Y'))
+                          ){
+                            $dataweek[1] += $datavalue['fo_fraction'];
+                          }elseif
+                          (
+                            $datavalue['fo_time']>mktime(0,0,0,date('m')-1,15,date('Y'))
+                            &&
+                            $datavalue['fo_time']<mktime(0,0,0,date('m')-1,21,date('Y'))
+                          ){
+                            $dataweek[2] += $datavalue['fo_fraction'];
+                          }elseif
+                          (
+                            $datavalue['fo_time']>mktime(0,0,0,date('m')-1,21,date('Y'))
+                            &&
+                            $datavalue['fo_time']<mktime(0,0,0,date('m')-1,28,date('Y'))
+                          ){
+                            $dataweek[3] += $datavalue['fo_fraction'];
+                          }
+
+                    }
           }
 
         }
+            //////////////////////////////////////////////////////////////////////////
+          }
+
       }
 
+
+ return $dataweek;
 
   }
 

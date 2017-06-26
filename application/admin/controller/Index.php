@@ -310,7 +310,7 @@ class Index extends Controller
    //上月量化详情
    public function monthlyDetails()
    {
-      $classid = input('get.id');//得到班级的id
+      $classid = input('post.classid');//得到班级的id
       //通过班级id获取本班学生的每周量化管理
       $student = model('Student');//量化表
       $data = $student->selectStudent($classid);
@@ -325,6 +325,18 @@ class Index extends Controller
       echo $result;
 
 
+   }
+
+   public function test()
+   {
+    $m = date('Y-m-d', mktime(0,0,0,date('m')-1,1,date('Y'))); //上个月的开始日期
+
+$t = date('t',strtotime($m)); //上个月共多少天
+
+
+    //上月刚开始的时间戳
+    $beginLastmonthly = mktime(0,0,0,date('m')-1,1,date('Y'));
+    echo $beginLastmonthly;
    }
 
 
