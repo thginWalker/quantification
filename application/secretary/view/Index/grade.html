@@ -1,0 +1,33 @@
+{include file="../public/static/head.html" /}
+{load href="/quantification/public/static/Secretary/js/grade.js" /}
+{load href="/quantification/public/static/Secretary/js/gradestudent.js" /}
+</head>
+<body>
+{php}
+ $s=json_encode($data);
+ $s = str_replace("\""," ",$s);
+  $ban =json_encode($ban);
+{/php}
+    <div id="hiddendata" style="display:none;">{$s}</div>
+    
+    <div id="hiddenban" style="display:none;">{$ban}</div>
+    <div style="margin-bottom:10px;padding:5px;" id="tb">
+        <a href="#" class="easyui-linkbutton" onclick="obj.add();"  data-options="iconCls:'icon-add',plain:true">添加</a><!-- plain:true 按钮扁平化-->
+        <a href="#" class="easyui-linkbutton" onclick="obj.edit()"  data-options="iconCls:'icon-edit',plain:true">修改</a>
+        <a href="#" class="easyui-linkbutton" onclick="obj.remove()"  data-options="iconCls:'icon-remove',plain:true">删除</a>
+        <a href="#" class="easyui-linkbutton" onclick="obj.details()"  data-options="iconCls:'icon-remove',plain:true" id="details">详情</a>
+        <a href="#" class="easyui-linkbutton" onclick="obj.save()"  data-options="iconCls:'icon-save',plain:true" style="display: none;" id="save">保存</a>
+        <a href="#" class="easyui-linkbutton" onclick="obj.redo()"  data-options="iconCls:'icon-redo',plain:true" style="display: none;" id="redo">取消编辑</a>
+    </div>
+    <table id="tt" class="easyui-datagrid" style="width:980px;"></table>
+      <div id="win"></div>  
+</body>
+</html>
+<script>
+var date=new Date;
+var year=date.getFullYear();
+var ban = $('#hiddenban').text();
+var val = $('#hiddendata').text();
+//var maj = $('#hiddenm').text();
+//alert(maj);
+</script>

@@ -1,14 +1,9 @@
 
 {include file="../public/static/head.html" /}
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>量化饼图</title>
+ <input type="hidden" id="classid" name="classid" value="{$classid}"><!--- 隐藏域传递ID-->
 
-</head>
-<body>
+
     <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
     <div id="main" style="width: 600px;height:400px;"></div>
 
@@ -18,8 +13,28 @@
     {load href="/quantification/public/static/admin/echarts-2.2.7/build/dist/echarts-all.js" /}
 
 
+
 <script type="text/javascript">
-        // 基于准备好的dom，初始化echarts实例
+
+         $.ajax({
+         type : "post",
+         async : true,            //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+         url : "monthlyDetails",    //请求发送到TestServlet处
+         data : {
+        classid:$('#classid').val()
+         },
+         dataType : "json",        //返回数据形式为json
+         success : function(result) {
+             //请求成功时执行该函数内容，result即为服务器返回的json对象
+             var nums = [];
+             if (result) {
+
+                    for(var i=0;i<result.length;i++){
+                        nums.push(result[i]);    //挨个取出销量并填入销量数组
+                      }
+                      console.log(nums);
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+// 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('main'));
 
         // 指定图表的配置项和数据
@@ -65,5 +80,26 @@
 
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
-    </script>
+
+
+      //////////////////////////////////////////////////////////////////////////////////////////////////
+      }
+                    },
+
+
+
+         error : function(errorMsg) {
+             //请求失败时执行该函数
+         alert("图表请求数据失败!");
+         myChart.hideLoading();
+         }
+
+    })
+
+
+　　</script>
+
+
+
+
 

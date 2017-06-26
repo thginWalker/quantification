@@ -13,8 +13,27 @@
 
 {load href="/quantification/public/static/admin/echarts-2.2.7/build/dist/echarts-all.js" /}
 
-<script type="text/javascript">
-    // 基于准备好的dom，初始化echarts图表
+
+     <script type="text/javascript">
+
+         $.ajax({
+         type : "post",
+         async : true,            //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+         url : "weeklyDetails",    //请求发送到TestServlet处
+         data : {
+        classid:$('#classid').val()
+         },
+         dataType : "json",        //返回数据形式为json
+         success : function(result) {
+             //请求成功时执行该函数内容，result即为服务器返回的json对象
+             var nums = [];
+             if (result) {
+
+                    for(var i=0;i<result.length;i++){
+                        nums.push(result[i]);    //挨个取出销量并填入销量数组
+                      }
+                      console.log(nums);
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
     var myChart = echarts.init(document.getElementById("main"));
     var option = {
         title : {
@@ -40,11 +59,11 @@
         },
         calculable : true,
         xAxis : [
-            // {
-            //     type : 'category',
-            //     boundaryGap : false,
-            //     data : ['周一','周二','周三','周四','周五','周六','周日']
-            // }
+            {
+                type : 'category',
+                boundaryGap : false,
+                data : nums
+            }
         ],
         yAxis : [
             {
@@ -59,74 +78,46 @@
             {
                 name:'本周量化',
                 type:'line',
-      //          data:[1, -2, 2, 5, 3, 2, 100],//数据
+                data:[1, -2, 2, 5, 3, 2, 0],
                 markPoint : {
                     data : [
 //                        {name : '周最低', value : -2, xAxis: 1, yAxis: -1.5}
-                //        {type : 'min', name: '周最低'}
-            //         ]
-            //     },
-            //     markLine : {
-            //         data : [
-            //             {type : 'average', name : '平均值'}
-            //         ]
-            //     }
-            // }
+                        {type : 'min', name: '周最低'}
+                    ]
+                },
+                markLine : {
+                    data : [
+                        {type : 'average', name : '平均值'}
                     ]
                 }
             }
-                ]
+        ]
     };
 
     // 为echarts对象加载数据
     myChart.setOption(option);
 
-</script>
 
 
 
 
-<script type="text/javascript">
+      //////////////////////////////////////////////////////////////////////////////////////////////////
+      }
+                    },
 
 
-    $.ajax({
-         type : "post",
-         async : true,            //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-         url : "weeklyDetails",    //请求发送到TestServlet处
-         data : {
-            classid:$('#classid').val()
-         },
-         dataType : "json",        //返回数据形式为json
-         success : function(result) {
-            alert(result);
 
-             //请求成功时执行该函数内容，result即为服务器返回的json对象
-             if (result) {
-                    for(var i=0;i<result.length;i++){
-                       names.push(result[i].name);    //挨个取出类别并填入类别数组
-                     }
-                    for(var i=0;i<result.length;i++){
-                        nums.push(result[i].num);    //挨个取出销量并填入销量数组
-                      }
-                    myChart.hideLoading();    //隐藏加载动画
-                    myChart.setOption({        //加载数据图表
-                        xAxis: {
-                            data: names
-                        },
-                        series: [{
-                            // 根据名字对应到相应的系列
-                            name: '销量',
-                            data: nums
-                        }]
-                    });
-
-             }
-
-        },
          error : function(errorMsg) {
              //请求失败时执行该函数
          alert("图表请求数据失败!");
          myChart.hideLoading();
          }
+
     })
-</script>
+
+
+　　</script>
+
+
+
+

@@ -165,14 +165,40 @@ return $weekData;
     }
 
 
+
+
+///////////////////////////////////////////////////////////////////////////////////      //http://www.w3school.com.cn/php/func_date_mktime.asp
         //通过学生id并通过量化表上月量化信息
     public function monthlyQuan($studentid)
     {
-    echo '<br>上月起始时间:<br>';
+      //本月刚开始的时间戳
+    $beginLastmonthly = date("Y-m-d H:i:s",mktime(0, 0 , 0,date("m")-1,1,date("Y")));
+    //本月结束时间戳
+      $endThismonthly =mktime(23,59,59,date('m'),date('t'),date('Y'));
     echo date("Y-m-d H:i:s",mktime(0, 0 , 0,date("m")-1,1,date("Y"))),"\n";
-    echo date("Y-m-d H:i:s",mktime(23,59,59,date("m") ,0,date("Y"))),"\n";
+          foreach ($studentid as $key => $value) {
+        $data = Db::table('Studscoreinfo')
+                              ->where('student_id',$studentid[$key])
+                              ->select();
 
-      $weekData = [0,0,0,0,0,0,0];//存储每月成绩
+        foreach ($data as $datakey => $datavalue) {
+          //判断时间
+          if ($datavalue['fo_time'] >$beginLastweek  &&  $datavalue['fo_time'] <$endLastweek) {//星期一-6
+                    for ($i = 0; $i < 7; $i++) {
+                          if (
+                            $datavalue['fo_time']>mktime(0,0,0,date('m'),date('d')-date('w')-6+$i,date('Y'))
+                            &&
+                            $datavalue['fo_time']<mktime(0,0,0,date('m'),date('d')-date('w')-5+$i,date('Y'))
+                            ) {
+                            $weekData[$i] += $datavalue['fo_fraction'];
+                          }
+                    }
+
+          }
+
+        }
+      }
+
 
   }
 

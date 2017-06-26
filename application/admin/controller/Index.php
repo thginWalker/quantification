@@ -276,7 +276,7 @@ class Index extends Controller
    public function weeklyDetails()
    {
       ////////////////////////////////////////////////////////////////////////////
-      $classid = input('post.id');//得到班级的id
+      $classid = input('post.classid');//得到班级的id
       //通过班级id获取本班学生的每周量化管理
       $student = model('Student');//量化表
       $data = $student->selectStudent($classid);
@@ -287,23 +287,30 @@ class Index extends Controller
 
        $studscoreinfo = model('Studscoreinfo');//量化表
       $result = $studscoreinfo->weeklyQuan($studentid);
-    echo $result;
-
+      $result = json_encode($result);
+      echo $result;
 
    }
 
 
 
-
-
-
-
-
-///////////////////////////////////////////////////////////////////每月量化管理
-   //每月量化管理
+///////////////////////////////////////////////////////////////////上月量化管理
+   //上月量化管理
    public function monthlyQuantification()
    {
-    $classid = input('get.id');//得到班级的id
+
+       $classid = input('get.id');//得到班级的id
+       $view = new View();
+       $view->assign('classid',$classid);
+      return $view->fetch('monthlyquan');
+
+   }
+
+
+   //上月量化详情
+   public function monthlyDetails()
+   {
+      $classid = input('get.id');//得到班级的id
       //通过班级id获取本班学生的每周量化管理
       $student = model('Student');//量化表
       $data = $student->selectStudent($classid);
@@ -314,14 +321,11 @@ class Index extends Controller
 
        $studscoreinfo = model('Studscoreinfo');//量化表
       $result = $studscoreinfo->monthlyQuan($studentid);
-      $view = new View();
-      $view->assign('result',$result);
-
-    return $this->fetch('monthlyquan');
+      $result = json_encode($result);
+      echo $result;
 
 
    }
-
 
 
 
