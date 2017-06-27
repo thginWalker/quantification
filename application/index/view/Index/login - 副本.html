@@ -33,18 +33,6 @@
 // 3量化委员committee
 // 4学生会studentunion
 // 5门户维护员gateway -->
-<table>
-
-    <tr>
-
-    </tr>
-    <tr>
-
-    </tr>
-    <tr>
-
-    </tr>
-</table>
             身　份：
             <select name="role" id="user_status">
                 <option value="0">学生</option>
@@ -60,12 +48,11 @@
             <div id="test">
             验证码：<br>
                 <div id="test_text">
-                    <input type="text" name="check" id="identify" placeholder="请输入验证码">
+                    <input type="text" name="check" id="identify" placeholder="请输入验证码" style="background-color: rgb(0,0,0,0.5);">
                 </div>
             <div id="identify_pic" onclick="test_click()"><img src="{:captcha_src()}" alt="captcha" style="cursor:pointer" onclick="this.src='{:captcha_src()}?'+Math.random()" title="点击更换"/></div>
             </div>
             <input type="submit" value="" id="button">
-
             </form>
             </div>
         </div>
@@ -95,6 +82,33 @@
 </body>
 </html>
 
+
+<script type="text/javascript">
+    $('#button').click(function(){
+             $.ajax({
+                   type: "post",
+                   url: "login",
+                   data: {
+                  name: $("#user_name").val(),
+                 password:$("#user_password").val(),
+                    role:$("#user_status").val(),
+                    check:$('#identify').val()
+                            },
+                    dataType: "json",
+                      success : function (data) {
+
+                      },
+                  });
+
+
+
+
+    })
+
+
+
+
+</script>
 <script>
 var modified = false;
 var user_name = false;
