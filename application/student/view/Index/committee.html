@@ -1,0 +1,21 @@
+
+{include file="../public/static/head.html" /}
+<!-- 留着 -->
+{load href="/quantification/public/static/admin/Index/committee.js" /}
+{load href="/quantification/public/static/admin/Index/committee_details.js" /}
+</head>
+
+
+<body>
+<div style="margin-bottom:10px;padding:5px;" id="tb">
+        <a href="#" class="easyui-linkbutton"  data-options="iconCls:'icon-edit',plain:true"  onclick="select()" id="edit">选择</a>
+        <span id="cd"></span>
+        <a href="#" class="easyui-linkbutton"  data-options="iconCls:'icon-save',plain:true"  onclick="edit()" style="display: none;" id="save">修改</a>
+        <a href="#" class="easyui-linkbutton"  data-options="iconCls:'icon-redo',plain:true"   onclick="redo()" style="display: none;" id="redo">取消编辑</a>
+        <input type="hidden" id="classid" name="classid" value="{$classid}"><!--- 隐藏域传递ID-->
+    </div>
+
+    <table id="pg" style="width:300px;"></table>
+</body>
+</html>
+

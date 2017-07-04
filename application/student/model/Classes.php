@@ -4,17 +4,13 @@ namespace app\admin\model;
 
 use think\Model;
 use think\Db;
-
+// use think\request;
 
 class Classes extends Model{
-    /*设置当前模型对于的完整数据表名称*/
+    //设置当前模型对应的完整数据表名称
     protected $table = 'Classes';
 
-    /**
-     * 查找班主任管理班级
-     * @param  [type] $teacher_id [description]
-     * @return [type]             [description]
-     */
+    //查找班主任管理班级
     public function manageClass($teacher_id)
     {
         $classes = Db::name('Classes');

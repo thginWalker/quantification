@@ -9,7 +9,6 @@ use think\Model;
 // 3量化委员committee
 // 4学生会studentunion
 // 5门户维护员gateway
-// 6秘书处secretariat
 
 use app\index\Model\Student;
 use app\index\Model\Admin;
@@ -66,11 +65,12 @@ class Index extends Controller
 
             } elseif ($role == 3) {//量化委员
 
+  //            $this->judgeModel('student','Student',$name,$password,1);
                $this->judgeModel('committee','Committee',$name,$password,3);
 
             } elseif ($role == 4) {//学生会
 
-                $this->judgeStudentunion($name,$password,$role);
+                $this->judgeModel('studentunion','Studentunion',$name,$password,4);
 
             } elseif ($role == 5) {//门户维护员
 
@@ -120,23 +120,6 @@ class Index extends Controller
                 $admin = model('Admin');
                 $result = $admin->selectAdmin($name,$password,$role);
                 $this->judgeLogin($result,$name,$role);//判断是否登录成功
-
-          }
-
-            /**、、、、、、、、、、、、、、、、、、、、、、需改善
-           * 学生会和秘书处的登录验证
-           * @param  [type] $name     [description]
-           * @param  [type] $password [description]
-           * @param  [type] $role     [description]
-           * @return [type]           [description]
-           */
-          public function judgeStudentunion($name,$password,$role)
-          {
-
-                $studentunion = model('Studentunion');
-                $result = $studentunion->selectStudentunion($name,$password,$role);//返回判断的role，区分学生会和秘书处
-
-                $this->judgeLogin($result,$name,$result);//判断是否登录成功
 
           }
 
@@ -210,12 +193,10 @@ class Index extends Controller
                        $this->success('登录成功', 'Admin/Index/index');
                     } elseif (session("role") == 3) {//量化委员
                         $this->success('登录成功', 'Committee/Index/index');
-                    } elseif (session("role") == 4) {//学生会，不包含秘书处
+                    } elseif (session("role") == 4) {//学生会
                       // echo "4";
                     } elseif (session("role") == 5) {//门户维护员
                         //
-                    }elseif (session("role") == 6) {//秘书处
-                      # code...
                     }else{
                       return false;
                     }

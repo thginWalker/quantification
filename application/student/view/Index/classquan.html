@@ -1,0 +1,32 @@
+{include file="../public/static/head.html" /}
+
+<!-- 留着 -->
+{load href="/quantification/public/static/admin/Index/classquan.js" /}
+
+{load href="/quantification/public/static/admin/Index/quan_details.js" /}
+
+<body>
+<div style="margin-bottom:10px;padding:5px;" id="tb">
+        <a href="#" class="easyui-linkbutton"  data-options="iconCls:'icon-edit',plain:true"  onclick="details()" id="edit">详情</a>
+        <span id="cd"></span>
+        <a href="#" class="easyui-linkbutton"  data-options="iconCls:'icon-save',plain:true"  onclick="edit()" style="display: none;" id="save">修改</a>
+        <a href="#" class="easyui-linkbutton"  data-options="iconCls:'icon-redo',plain:true"   onclick="redo()" style="display: none;" id="redo">取消编辑</a>
+    <div style="margin-bottom:10px;padding:5px;" id="tb"><!-- plain:true 按钮扁平化-->
+        <input type="hidden" id="classid" name="classid" value="{$classid}"><!--- 隐藏域传递ID-->
+    </div>
+    <table id="tt" class="easyui-datagrid" style="width:980px;">
+    </table>
+
+
+    <div id="win" class="easyui-window" title="量化详情" closed="true" style="width:900px;padding:25px;">
+<!-- //////////////////////////////////////////////// -->
+<input type="hidden" id="studentid" name="studentid"><!--- 隐藏域传递学生ID-->
+<!-- //////////////////////////////////////// -->
+
+    </div>
+
+</body>
+</html>
+
+
+

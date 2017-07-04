@@ -7,14 +7,11 @@ use think\Db;
 // use think\request;
 
 class Committee extends Model{
-    /*设置当前模型对于的完整数据表名称*/
+    //设置当前模型对应的完整数据表名称
     protected $table = 'Committee';
 
-    /**
-     * 通过班级id找到量化委员学生id并返回信息
-     * @param  [type] $classid [description]
-     * @return [type]          [description]
-     */
+
+    //通过班级id找到量化委员学生id并返回信息
     public function selectCommittee($classid){
         $committee =  Db::table('Committee');
         $data = $committee
@@ -25,12 +22,7 @@ class Committee extends Model{
 
     }
 
-    /**
-     * 修改量化委员
-     * @param  [type] $classid    [description]
-     * @param  [type] $student_id [description]
-     * @return [type]             [description]
-     */
+    //修改量化委员
     public function updateCommittee($classid,$student_id)
     {
 

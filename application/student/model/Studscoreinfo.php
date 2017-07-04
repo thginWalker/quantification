@@ -7,17 +7,10 @@ use think\Db;
 
 
 class Studscoreinfo extends Model{
-    /*设置当前模型对于的完整数据表名称*/
+    //设置当前模型对应的完整数据表名称
     protected $table = 'Studscoreinfo';
-
-    /**
-     * 添加量化信息
-     * @param [type] $studentid [description]
-     * @param [type] $time      [description]
-     * @param [type] $fraction  [description]
-     * @param [type] $reason    [description]
-     * @param [type] $remarks   [description]
-     */
+/////////////////////////////////////////////////////////////////////////////////////
+    //添加量化信息
     public function addStudscoreinfo($studentid,$time,$fraction,$reason,$remarks)
     {
       $data['student_id'] = $studentid;//此处获得student_id

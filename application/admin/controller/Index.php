@@ -13,6 +13,10 @@ use think\Session;
 
 class Index extends Controller
 {
+    /**
+     * 教师模块首页设置
+     * @return [type] [description]
+     */
    public function index()
    {
      //先查找班主任管理班级
@@ -25,8 +29,11 @@ class Index extends Controller
   }
 
 
-////////////////////////////////////////////////////////////////////////班级人员管理
-  //班级人员管理首页
+//////////////////////////////////////////班级人员管理//////////////////////////////////////////
+  /**
+   * 班级人员管理首页
+   * @return [type] [description]
+   */
    public function classStaff()
    {
        $classid = input('get.id');//得到班级的id
@@ -35,7 +42,10 @@ class Index extends Controller
       return $view->fetch('class_staff');
    }
 
-   //班级人员管理详情
+   /**
+    * 班级人员管理详情
+    * @return [type] [description]
+    */
    public function classDetails()
    {
 
@@ -57,7 +67,9 @@ class Index extends Controller
 
    }
 
-    //添加班级人员信息
+    /**
+     * 添加班级人员信息
+     */
    public function addClass()
    {
         $number = input('post.number');
@@ -71,7 +83,10 @@ class Index extends Controller
         return $result;
    }
 
-   //修改班级人员信息
+   /**
+    * 修改班级人员信息
+    * @return [type] [description]
+    */
    public function updateClass()
    {
         $Id = input('post.Id');
@@ -87,7 +102,10 @@ class Index extends Controller
 
    }
 
-    //删除班级人员信息
+    /**
+     * 删除班级人员信息
+     * @return [type] [description]
+     */
    public function deleteClass()
    {
        $ids = input('post.ids');
@@ -102,8 +120,10 @@ class Index extends Controller
 
   }
 
-/////////////////////////////////////////////////////////////////////////////量化委员管理
-    //量化委员管理
+//////////////////////////////////////////量化委员管理//////////////////////////////////////////
+    /**
+     * 量化委员管理
+     */
     public function Committee()
     {
      $classid = input('get.id');//得到班级的id
@@ -113,7 +133,10 @@ class Index extends Controller
 
    }
 
-   //量化委员详情
+   /**
+    * 量化委员详情
+    * @return [type] [description]
+    */
    public function commDetails()
    {
         $classid = input('post.classid');//得到班级的id
@@ -127,7 +150,10 @@ class Index extends Controller
       echo $result;
    }
 
-   //量化委员列表
+   /**
+    * 量化委员列表
+    * @return [type] [description]
+    */
    public function comBobox()
    {
        $classid = input('get.classid');//得到班级的id
@@ -137,7 +163,10 @@ class Index extends Controller
       echo $result;
    }
 
-   //修改量化委员
+   /**
+    * 修改量化委员
+    * @return [type] [description]
+    */
    public function updatecomm()
    {
       $classid = input('post.classid');
@@ -148,8 +177,11 @@ class Index extends Controller
       echo $data;
    }
 
-/////////////////////////////////////////////////////////////////////////////班级量化管理
-   //班级量化管理首页
+//////////////////////////////////////////班级量化管理//////////////////////////////////////////
+   /**
+    * 班级量化管理首页
+    * @return [type] [description]
+    */
     public function classQuantification()
     {
        $classid = input('get.id');//得到班级的id
@@ -160,7 +192,10 @@ class Index extends Controller
 
    }
 
-   //班级量化详情
+   /**
+    * 班级量化详情
+    * @return [type] [description]
+    */
    public function quanDetails()
    {
       //找到班级人员
@@ -207,7 +242,10 @@ class Index extends Controller
       exit;
    }
 
-   //学生量化详情
+   /**
+    * 学生量化详情
+    * @return [type] [description]
+    */
    public function studentDetails()
    {
       $studentid = input('post.studentid');
@@ -220,7 +258,9 @@ class Index extends Controller
 
 
 
-   //添加量化信息
+   /**
+    * 添加量化信息
+    */
    public function addQuan()
    {
         $studentid = input('post.studentid');
@@ -234,7 +274,10 @@ class Index extends Controller
         echo $data;
    }
 
-   //修改量化信息
+   /**
+    * 修改量化信息
+    * @return [type] [description]
+    */
    public function updateQuan()
    {
         $id = input('post.Id');
@@ -250,7 +293,10 @@ class Index extends Controller
       //echo "修改班级量化管理";
    }
 
-    //删除量化信息
+    /**
+     * 删除量化信息
+     * @return [type] [description]
+     */
    public function deleteQuan()
    {
     $ids = input('post.ids');
@@ -260,8 +306,11 @@ class Index extends Controller
     echo $data;
    }
 
-/////////////////////////////////////////////////////////////////////////每周量化管理
-   //每周量化管理
+//////////////////////////////////////////上周量化管理//////////////////////////////////////////
+   /**
+    * 上周量化管理
+    * @return [type] [description]
+    */
    public function weeklyQuantification()
    {
 
@@ -272,7 +321,10 @@ class Index extends Controller
 
    }
 
-  //每周量化详情
+  /**
+   * 上周量化详情
+   * @return [type] [description]
+   */
    public function weeklyDetails()
    {
       ////////////////////////////////////////////////////////////////////////////
@@ -294,8 +346,11 @@ class Index extends Controller
 
 
 
-///////////////////////////////////////////////////////////////////上月量化管理
-   //上月量化管理
+//////////////////////////////////////////上月量化管理//////////////////////////////////////////
+   /**
+    * 上月量化管理
+    * @return [type] [description]
+    */
    public function monthlyQuantification()
    {
 
@@ -307,7 +362,10 @@ class Index extends Controller
    }
 
 
-   //上月量化详情
+   /**
+    * 上月量化详情
+    * @return [type] [description]
+    */
    public function monthlyDetails()
    {
       $classid = input('post.classid');//得到班级的id
@@ -327,23 +385,13 @@ class Index extends Controller
 
    }
 
-   public function test()
-   {
-    $m = date('Y-m-d', mktime(0,0,0,date('m')-1,1,date('Y'))); //上个月的开始日期
-
-$t = date('t',strtotime($m)); //上个月共多少天
-
-
-    //上月刚开始的时间戳
-    $beginLastmonthly = mktime(0,0,0,date('m')-1,1,date('Y'));
-    echo $beginLastmonthly;
-   }
-
-
-
-
-
-    //返回json数据
+    /**
+     * 返回json数据
+     * @param  string $code    [description]
+     * @param  string $message [description]
+     * @param  [type] $data    [description]
+     * @return [type]          [description]
+     */
     private function toJson($code = '200', $message = '数据正确', $data)
     {
         $pushdata = []; //定义新数组
