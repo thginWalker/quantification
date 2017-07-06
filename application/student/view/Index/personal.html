@@ -29,8 +29,8 @@ $(function(){
       $('#tt').datagrid({
         width:980,
         //height:不设让它自适应
-        title:"班级量化" ,
-        url:"classDetails",
+        title:"班级人员" ,
+        url:"perDetails",
         iconCls:'icon-save',
         striped:true,//自适应
         pagination:true,//可扩展面板
@@ -48,8 +48,8 @@ $(function(){
         hidden:true,
       },
       {
-        field : 'nt_name',
-        title : '姓名',
+        field : 'fo_time',
+        title : '加分时间',
         width:150,
         sortable : true,
         editor : {
@@ -59,7 +59,18 @@ $(function(){
           },
         },
       },
-
+      {
+        field : 'fo_reason',
+        title : '加分原因',
+        width:150,
+        sortable : true,
+        editor : {
+          type : 'validatebox',
+          options : {
+            required : true,
+          },
+        },
+      },
       {
         field : 'fo_fraction',
         title : '分数',
@@ -73,7 +84,7 @@ $(function(){
         },
       },
        {
-        field : 'nt_remarks',
+        field : 'fo_remarks',
         title : '备注',
         width:150,
         sortable : true,

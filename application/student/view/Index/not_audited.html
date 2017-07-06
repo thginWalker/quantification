@@ -30,7 +30,7 @@ $(function(){
         width:980,
         //height:不设让它自适应
         title:"班级量化" ,
-        url:"classDetails",
+        url:"notAuDetails",
         iconCls:'icon-save',
         striped:true,//自适应
         pagination:true,//可扩展面板
@@ -48,7 +48,7 @@ $(function(){
         hidden:true,
       },
       {
-        field : 'nt_name',
+        field : 'dy_name',
         title : '姓名',
         width:150,
         sortable : true,
@@ -59,10 +59,9 @@ $(function(){
           },
         },
       },
-
       {
-        field : 'fo_fraction',
-        title : '分数',
+        field : 'dy_time',
+        title : '时间',
         width:150,
         sortable : true,
         editor : {
@@ -73,7 +72,31 @@ $(function(){
         },
       },
        {
-        field : 'nt_remarks',
+        field : 'dy_reason',
+        title : '原因',
+        width:150,
+        sortable : true,
+        editor : {
+          type : 'validatebox',
+          options : {
+            // required : true,
+          },
+        },
+      },
+      {
+        field : 'dy_fraction',
+        title : '分数',
+        width:150,
+        sortable : true,
+        editor : {
+          type : 'validatebox',
+          options : {
+            // required : true,
+          },
+        },
+      },
+      {
+        field : 'dy_remarks',
         title : '备注',
         width:150,
         sortable : true,

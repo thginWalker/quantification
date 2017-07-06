@@ -1,0 +1,45 @@
+{include file="../public/static/head.html" /}
+
+
+</head>
+<body>
+    <div class="easyui-panel" title="New Topic" style="width:400px">
+      <div style="padding:10px 60px 20px 60px">
+       <form id="self" method="post" action="{:url('Index/revisemessage')}">
+        <input type="hidden" value="{$message.0.ad_sex}" id="sex">
+         <table >
+            <tr>
+               <td>姓名:</td>
+               <td><input class="easyui-textbox" type="text" name="name" data-options="required:true" value="{$message.0.ad_name}"></input></td>
+            </tr>
+            <tr>
+               <td>工号:</td>
+               <td><input class="easyui-textbox" type="text" name="number" data-options="required:true" value="{$message.0.ad_number}">  </input></td>
+            </tr>
+            <tr>
+               <td>邮箱:</td>
+               <td><input class="easyui-textbox" type="text" name="email" data-options="required:true,validType:'email'" value="{$message.0.ad_email}"></input></td>
+            </tr>
+
+
+            <tr>
+               <td>sex:</td>
+               <td>
+                  <input name="sex" type="radio" value="0" id="man" />男 </label>
+                  <input name="sex" type="radio" value="1" id="woman"/>女</label>
+               </td>
+            </tr>
+
+         </table>
+       </form>
+       <div style="text-align:center;padding:5px">
+         <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">提交</a>
+         <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">清除</a>
+
+       </div>
+       </div>
+   </div>
+{load href="/quantification/public/static/Secretary/js/self.js" /}
+
+</body>
+</html>

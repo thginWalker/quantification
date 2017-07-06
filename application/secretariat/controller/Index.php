@@ -1,20 +1,11 @@
 <?php
-namespace app\index\controller;
+namespace app\secretariat\controller;
+
 
 use think\Controller;
 use think\Model;
-// 0学生
-// 1超级管理员admin
-// 2管理员admin
-// 3量化委员committee
-// 4学生会studentunion
-// 5门户维护员gateway
 
-use app\index\Model\Student;
-use app\index\Model\Admin;
-use app\index\Model\Committee;
-use app\index\Model\Studentunion;
-use app\index\Model\Gateway;
+use app\secretariat\Model\Dynamic;
 
 use think\View;     //视图类
 use think\Session;
@@ -22,184 +13,71 @@ use think\Session;
 class Index extends Controller
 {
     /**
-     * 判断是否有session值,有跳转，没有设置
+     * 秘书处模块首页设置
      * @return [type] [description]
      */
    public function index()
    {
-
-          if (!session::has('name') && !session::has('role')) {
-              $view = new View();
-              return $view->fetch('login');
-              exit();
-         }else{
-
-              $this->judgeJump();
-         }
-
+     //先查找班主任管理班级
+      $name =  session('name');//秘书处登录名字
+       $view = new View();
+       $view->assign('secretariat',$name);//传去秘书处名字
+       return $view->fetch();
   }
 
-    /**
-     * 进行登录判断
-     * @return [type] [description]
-     */
-    public function login()
-    {
-        $name = input('post.username');
-        $password = md5(input('post.password'));
-        $role = input('post.role');
-        $check =  input('post.check');
+  //量化详细内容
+  public function quanDetails()
+  {
+      $sort =  input('post.sort');//排序字段
 
-        if(!captcha_check($check)){ //验证码判断成功
-          $this->error("验证码错误");
-          exit();
-        }
-        //判断登录类型进行验证跳转
-        if ($role == 0) {//学生
+      $page = isset($_POST['page'])?intval($_POST['page']):1;//默认页码
+      $rows = isset($_POST['rows'])?intval($_POST['rows']):5;//默认行数
 
-          $this->judgeModel('student','Student',$name,$password,0);
+      $dynamic = model('Dynamic');
 
-            } elseif ($role == 1 || $role == 2) {//超级管理员
+      $result = $dynamic->retrieveDynamic($page,$rows,$sort);
 
-            $this->judgeAdmin($name,$password,$role);
+      $result = json_encode($result);
+      $total = $dynamic->countDynamic();
 
-            } elseif ($role == 3) {//量化委员
+      $result = substr($result, 0, -1);
+      $result = '{"total" : '.$total.', "rows" : '.$result.']}';
 
-  //            $this->judgeModel('student','Student',$name,$password,1);
-               $this->judgeModel('committee','Committee',$name,$password,3);
+      echo $result;
+  }
 
-            } elseif ($role == 4) {//学生会
+  //审核量化
+  public function Auditquan()
+  {
+       $view = new View();
+       return $view->fetch();
+  }
 
-                $this->judgeModel('studentunion','Studentunion',$name,$password,4);
+  //量化通过
+  public function Audited()
+  {
+     $Id = input('post.Id');
+     $dynamic = model('Dynamic');
+      $result = $dynamic->quanAudited($Id);//返回判断性
+      echo $result;
+  }
 
-            } elseif ($role == 5) {//门户维护员
+  //量化否决
+  public function Auditveto()
+  {
+     $Id = input('post.Id');
+     $dynamic = model('Dynamic');
+    $result = $dynamic->quanAuditveto($Id);//返回判断性
+    echo $result;
+  }
 
-                $this->judgeModel('gateway','Gateway',$name,$password,5);
+  //修改密码
+  public function Modifypwd()
+  {
+        $view = new View();
+       return $view->fetch();
+  }
 
-            }else{
-
-                $this->error("非法登录");
-              return false;
-
-            }
-
-            ///用户登录日志插件，记录IP端口及登录方式
-            ///增加数据库log
-
-    }
-
-          /**
-           * 查找进行数据库验证
-           * @param  [type] $db       [description]
-           * @param  [type] $model    [description]
-           * @param  [type] $name     [description]
-           * @param  [type] $password [description]
-           * @param  [type] $role     [description]
-           * @return [type]           [description]
-           */
-          public function judgeModel($db,$model,$name,$password,$role)
-          {
-
-              $db = model($model);
-              $selectModel = "select{$model}";
-              $result = $db->$selectModel($name,$password);
-              $judge = $this->judgeLogin($result,$name,$role);
-
-          }
-
-          /**
-           * 书记和班主任的登录验证
-           * @param  [type] $name     [description]
-           * @param  [type] $password [description]
-           * @param  [type] $role     [description]
-           * @return [type]           [description]
-           */
-          public function judgeAdmin($name,$password,$role)
-          {
-
-                $admin = model('Admin');
-                $result = $admin->selectAdmin($name,$password,$role);
-                $this->judgeLogin($result,$name,$role);//判断是否登录成功
-
-          }
-
-          /**
-           * 清除默认session值，即退出
-           * @return [type] [description]
-           */
-          public function clearSession()
-          {
-            Session::clear();
-          }
-
-          /**
-           * 设置登录session
-           * @param [type] $name [description]
-           * @param [type] $role [description]
-           */
-          public function setSession($name,$role)
-          {
-
-                //登录成功设置session
-                Session::set('name',$name);
-                Session::set('role',$role);
-                return true;
-          }
-
-          /**
-           * 判断session是否设置成功
-           * @return [type] [description]
-           */
-          public function judgeSession()
-          {
-               if (Session::has('name') && Session::has('role')) {
-                       return true;
-               } else {
-                       return false;
-              }
-          }
-
-          /**
-           * 登录是否成功进行判断
-           * @param  [type] $result [description]
-           * @param  [type] $name   [description]
-           * @param  [type] $role   [description]
-           * @return [type]         [description]
-           */
-          public function judgeLogin($result,$name,$role)
-          {
-              if ($result) {
-                $this->setSession($name,$role);//设置session
-                $this->judgeSession();//判断是否设置session
-                $this->judgeJump();//进行相应跳转
-
-                } else {
-
-                  $this->error("账号或密码错误!");
-                }
-          }
-
-          /**
-           * 判断session是否存在进行跳转
-           * @return [type] [description]
-           */
-          public function judgeJump()
-          {
-                  if (session("role") == 0) {//学生
-                      $this->success('登录成功', 'Student/Index/index');
-                    } elseif (session("role") == 1) {//超级管理员
-                      $this->success('登录成功', 'Secretary/Index/index');
-                    } elseif (session("role") == 2) {//管理员
-                       $this->success('登录成功', 'Admin/Index/index');
-                    } elseif (session("role") == 3) {//量化委员
-                        $this->success('登录成功', 'Committee/Index/index');
-                    } elseif (session("role") == 4) {//学生会
-                      // echo "4";
-                    } elseif (session("role") == 5) {//门户维护员
-                        //
-                    }else{
-                      return false;
-                    }
-          }
 
 }
+

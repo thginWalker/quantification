@@ -34,36 +34,25 @@ li{
             </div>
 
             <!--左-->
-            <div id="west" data-options="region:'west',iconCls:'icon-man',title:'学生',split:true" style="width:200px;">
+            <div id="west" data-options="region:'west',iconCls:'icon-man',title:'班主任',split:true" style="width:200px;">
                   <!--折叠菜单-->
                   <div id="aa" class="easyui-accordion" style="height:auto" >
                         <!--菜单项-->
-                        <div title="量化详情管理" data-options="iconCls:'icon-edit'" style="padding:10px;">
+                        <div title="审核量化信息" data-options="iconCls:'icon-edit'" style="padding:10px;">
                               <ul>
-                              <!-- 根据管理班级进行添加-->
 
-                                 <li><a href="#" class="easyui-linkbutton" onclick="addTab('个人量化','quanPersonal')">个人量化</a></li>
-                                 <li><a href="#" class="easyui-linkbutton" onclick="addTab('班级量化','quanClasses')">班级量化</a></li>
+                                 <li><a href="#" class="easyui-linkbutton" onclick="addTab('审核量化','Auditquan')">审核量化</a></li>
                                 </ul>
                         </div>
-                         <div title="量化监督管理" data-options="iconCls:'icon-edit'">
+                         <div title="修改个人信息" data-options="iconCls:'icon-edit'">
                               <ul>
-                                <!-- 根据管理班级进行添加-->
 
-                                 <li><a href="#" class="easyui-linkbutton" onclick="addTab('查看未审核','notAudited')">查看未审核</a></li>
-
-                                </ul>
-
-                        </div>
-                         <div title="个人信息管理" data-options="iconCls:'icon-edit'" style="padding:10px;">
-                                  <ul>
-                                <!-- 根据管理班级进行添加-->
-
-                                 <li><a href="#" class="easyui-linkbutton" onclick="addTab('更改信息','changeInform')">更改信息</a></li>
+                                 <li><a href="#" class="easyui-linkbutton" onclick="addTab('修改密码','Modifypwd')">修改密码</a></li>
 
                                 </ul>
 
                         </div>
+
 
 
                   </div>

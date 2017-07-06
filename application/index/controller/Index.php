@@ -123,7 +123,7 @@ class Index extends Controller
 
           }
 
-            /**、、、、、、、、、、、、、、、、、、、、、、需改善
+            /**
            * 学生会和秘书处的登录验证
            * @param  [type] $name     [description]
            * @param  [type] $password [description]
@@ -133,10 +133,15 @@ class Index extends Controller
           public function judgeStudentunion($name,$password,$role)
           {
 
-                $studentunion = model('Studentunion');
-                $result = $studentunion->selectStudentunion($name,$password,$role);//返回判断的role，区分学生会和秘书处
 
-                $this->judgeLogin($result,$name,$result);//判断是否登录成功
+                $studentunion = model('Studentunion');
+                $role = $studentunion->selectStudentunion($name,$password,$role);//返回判断的role，区分学生会和秘书处
+                if (is_numeric($role)) {
+                  $result = true;
+                }else{
+                  $result = false;
+                }
+                $this->judgeLogin($result,$name,$role);//判断是否登录成功
 
           }
 
@@ -212,10 +217,15 @@ class Index extends Controller
                         $this->success('登录成功', 'Committee/Index/index');
                     } elseif (session("role") == 4) {//学生会，不包含秘书处
                       // echo "4";
+                      echo "我是学生会";
+                      exit;
                     } elseif (session("role") == 5) {//门户维护员
                         //
+                        echo "我是门户维修员";
                     }elseif (session("role") == 6) {//秘书处
-                      # code...
+                      $this->success('登录成功', 'Secretariat/Index/index');
+                      echo "我是秘书处";
+                      exit;
                     }else{
                       return false;
                     }

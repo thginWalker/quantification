@@ -6,7 +6,8 @@ use think\Model;
 use think\Db;
 
 
-class Classes extends Model{
+class Classes extends Model
+{
     /*设置当前模型对于的完整数据表名称*/
     protected $table = 'Classes';
 
