@@ -90,6 +90,81 @@ class Student extends Model
     }
 
 
+    /**
+     * 读取学生用户信息
+     * @param  [type] $teacher_id [description]
+     * @return [type]             [description]
+     */
+    public function selectStudent($student_id)
+    {
+
+        $data = Db::name('Student')
+                       ->where('Id','eq',$student_id)
+                       ->find();
+        return $data;
+
+    }
+
+    /**
+     * 修改学生用户信息
+     * @param  [type] $teacher_id [description]
+     * @param  [type] $number     [description]
+     * @param  [type] $name       [description]
+     * @param  [type] $sex        [description]
+     * @param  [type] $email      [description]
+     * @return [type]             [description]
+     */
+    public function modifyMessage($student_id,$number,$name,$sex,$email)
+    {
+
+      $data = Db::table('Student')
+                  ->where('Id','eq',$student_id)
+                  ->update([
+                    'nt_number' => $number,
+                    'nt_name' => $name,
+                    'nt_sex' => $sex,
+                    'nt_email' => $email
+                    ]) ;
+        if ($data) {
+          return true;
+        }else{
+          return false;
+        }
+    }
+
+    /**
+     * 查找学生密码
+     * @param  [type] $teacher_id [description]
+     * @return [type]             [description]
+     */
+    public function studentPwd($student_id)
+    {
+      $student = Db::table('Student');
+            $data= $student
+              ->field('nt_password')
+              ->where('Id','eq',$student_id)
+              ->find();
+            return $data;
+    }
+
+
+    /**
+     * 修改学生密码
+     * @param  [type] $classid [description]
+     * @return [type]          [description]
+     */
+    public function modifyPwd($student_id,$password)
+    {
+      $student =  Db::name('Student');
+
+        $data =  $student
+                        ->where('Id','eq',$student_id)
+                        ->update([
+                          'nt_password' => $password
+                          ]) ;
+        return $data;
+    }
+
 
 
 

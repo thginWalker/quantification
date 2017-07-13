@@ -19,12 +19,13 @@ class HeadmasterModel extends Model{
      * @param  [type] $rows [description]
      * @return [type]       [description]
      */
-    public function retrieveheadmaster($page,$rows)
+    public function retrieveheadmaster($page,$rows,$sort)
     {
         $start = ($page-1)*$rows;
         $data = Db::name('Admin')->where('ad_distinguish',1)
-                       ->limit($start,$rows)//从第10行开始的25条数据
-                       ->select();
+                    ->order($sort,'desc')
+                    ->limit($start,$rows)//从第10行开始的25条数据
+                    ->select();
         return $data;
     }
 
@@ -35,8 +36,9 @@ class HeadmasterModel extends Model{
      */
     public function countheadmaster()
     {
-           $data =  Db::name('Admin')->where('ad_distinguish',1)
-                     ->count();//
+           $data =  Db::name('Admin')
+                        ->where('ad_distinguish',1)
+                        ->count();//
         return $data;
     }
 

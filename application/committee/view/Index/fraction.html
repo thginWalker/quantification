@@ -1,0 +1,23 @@
+{include file="../public/static/head.html" /}
+{load href="/quantification/public/static/committee/js/fraction.js" /}
+
+</head>
+
+ {php}
+  $class =json_encode($class);
+{/php}
+<body>
+ <div id="hiddenban" style="display:none;">{$class}</div>
+    <div style="margin-bottom:10px;padding:5px;" id="tb">
+        <a href="#" class="easyui-linkbutton" onclick="obj.remove()"  data-options="iconCls:'icon-remove',plain:true">审核</a>
+    </div>
+    <table id="tt" class="easyui-datagrid" style="width:1000px;">
+    </table>
+</body>
+<script>
+var val = $('#hiddenban').text();
+</script>
+</html>
+
+
+

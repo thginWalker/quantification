@@ -2,8 +2,7 @@
 namespace app\student\controller;
 
 
-use think\Controller;
-use think\Model;
+use app\common\Common;
 
 use app\student\Model\Student;
 use app\student\Model\Studscoreinfo;
@@ -11,7 +10,7 @@ use app\student\Model\Studscoreinfo;
 use think\View;     //视图类
 use think\Session;
 
-class Index extends Controller
+class Index extends Common
 {
     /**
      * 学生模块首页设置
@@ -60,7 +59,7 @@ class Index extends Controller
 
   }
 
-  //个人量化详情
+  //个人量化详情==================>需修改
   public function perDetails()
   {
 
@@ -68,7 +67,6 @@ class Index extends Controller
       $rows = isset($_POST['rows'])?intval($_POST['rows']):5;//默认行数
 
       $studentid = $this->selectStudentId();
-
       $studscoreinfo = model('Studscoreinfo');
       $result = $studscoreinfo->perDetails($page,$rows,$studentid);
       $result = json_encode($result);
@@ -163,13 +161,81 @@ class Index extends Controller
 
 
 ///////////////////////////////////个人量化首页////////////////////////////////////////////////
-  //更改信息
-  public function changeInform()
-  {
 
+ /**
+    * 修改信息首页
+    * @return [type] [description]
+    */
+   public function modifyInfo()
+   {
+       //先查找学生id
+      $student_id =  $this->selectStudentId();
+      $student = model('Student');
+      $info = $student->selectStudent($student_id);
+      $view = new View();
+      $view->assign('info',$info);
+      return $view->fetch('self');
+   }
+
+   /**
+    * 修改学生信息
+    * @return [type] [description]
+    */
+   public function reviseMessage()
+   {
+      $student_id =  $this->selectStudentId();
+      $number = input('post.number');
+      $name = input('post.name');
+      $sex = input('post.sex');
+      $email = input('post.email');
+      $student = model("Student");
+      $result = $student->modifyMessage($student_id,$number,$name,$sex,$email);
+
+       if($result){
+       $this->success('修改成功','student/Index/modifyInfo');
+      }else{
+        $this->error('修改失败','student/Index/modifyInfo');
+      }
+   }
+
+   /**
+    * 修改密码首页
+    * @return [type] [description]
+    */
+   public function modifyPass()
+   {
        $view = new View();
-       return $view->fetch('change_inform');
-  }
+       // $view->assign('classid',$classid);
+      return $view->fetch('password');
+   }
+
+   /**
+    * 修改密码信息
+    */
+
+   public function revisePwd()
+   {
+
+      $student_id =  $this->selectStudentId();
+      $oldpassword =  input('post.oldpassword');
+      $password =  md5(input('post.password'));
+       $student = model("Student");
+       $data = $student->studentPwd($student_id);
+////////////////////////////////////////////////模型里面实例化数据表的问题
+            if( md5($oldpassword) == $data['nt_password'])
+            {
+                $result = $student->modifyPwd($student_id,$password);
+                if($result){
+                     $this->success('修改成功','Student/Index/modifyPass');
+                }else{
+                    $this->error('修改失败','Student/Index/modifyPass');
+                }
+            }else{
+
+                $this->error('原密码错误','Student/Index/modifyPass');
+
+            }
+   }
 
 
 

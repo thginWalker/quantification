@@ -1,17 +1,17 @@
 <?php
 namespace app\admin\controller;
 
-use think\Controller;
-use think\Model;
+use app\common\Common;
 
 use app\admin\Model\Student;
 use app\admin\Model\Classes;
 use app\admin\Model\Studscoreinfo;
+use app\admin\Model\Admin;
 
 use think\View;     //视图类
 use think\Session;
 
-class Index extends Controller
+class Index extends Common
 {
     /**
      * 教师模块首页设置
@@ -248,11 +248,12 @@ class Index extends Controller
     */
    public function studentDetails()
    {
-      $studentid = input('post.studentid');
+      $studentid = input('get.studentid');
       //通过studscoreinfo查找单个学生的详细量化原因
       $studscoreinfo = model('Studscoreinfo');
       $studentDetails = $studscoreinfo->fractionDetails($studentid);
-      $data = $this->toJson('200',  '数据正确', $studentDetails);
+      // $data = $this->toJson('200',  '数据正确', $studentDetails);
+       $data = json_encode($studentDetails);
       echo $data;
    }
 
@@ -384,6 +385,80 @@ class Index extends Controller
 
 
    }
+
+//////////////////////////////////////////个人信息管理//////////////////////////////////////////
+   /**
+    * 修改信息首页
+    * @return [type] [description]
+    */
+   public function modifyInfo()
+   {
+       //先查找班主任个人信息
+      $teacher_id =  session('teacher_id');
+      $admin = model('Admin');
+      $info = $admin->selectAdmin($teacher_id);
+      $view = new View();
+      $view->assign('info',$info);
+      return $view->fetch('self');
+   }
+
+   /**
+    * 修改老师信息
+    * @return [type] [description]
+    */
+   public function reviseMessage()
+   {
+      $teacher_id =  session('teacher_id');
+      $number = input('post.number');
+      $name = input('post.name');
+      $sex = input('post.sex');
+      $email = input('post.email');
+      $admin = model("Admin");
+      $result = $admin->modifyMessage($teacher_id,$number,$name,$sex,$email);
+       if($result){
+       $this->success('修改成功','Admin/Index/modifyInfo');
+      }else{
+        $this->error('修改失败','Admin/Index/modifyInfo');
+      }
+   }
+
+   /**
+    * 修改密码首页
+    * @return [type] [description]
+    */
+   public function modifyPass()
+   {
+       $view = new View();
+       // $view->assign('classid',$classid);
+      return $view->fetch('password');
+   }
+
+   /**
+    * 修改密码信息
+    */
+
+   public function revisePwd()
+   {
+
+      $teacher_id = session('teacher_id');
+      $oldpassword =  input('post.oldpassword');
+      $password =  md5(input('post.password'));
+       $admin = model("Admin");
+       $data = $admin->adminPwd($teacher_id);
+            if( md5($oldpassword) == $data['ad_password'])
+            {
+                $result = $admin->modifyPwd($teacher_id,$password);
+                if($result){
+                     $this->success('修改成功','Admin/Index/modifyPass');
+                }else{
+                    $this->error('修改失败','Admin/Index/modifyPass');
+                }
+            }else{
+                $this->error('原密码错误','Admin/Index/modifyPass');
+
+            }
+   }
+
 
     /**
      * 返回json数据

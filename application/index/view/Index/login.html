@@ -9,6 +9,9 @@
 <link rel="stylesheet" href="\quantification\public\static\bootstrap\css\bootstrap.min.css">
 
 
+<script src="\quantification\public\static\index\js\jquery.min.js"></script>
+<script src="\quantification\public\static\index\js\index.js"></script>
+
 <script src="\quantification\public\static\bootstrap\js\bootstrap.min.js"></script>
 <!-- bootstrap -->
 
@@ -19,8 +22,7 @@
 <link href="\quantification\public\static\index\css\index.css" rel="stylesheet" type="text/css">
 
 
-<script src="\quantification\public\static\index\js\jquery.min.js"></script>
-<script src="\quantification\public\static\index\js\index.js"></script>
+
 
 </head>
 <body>
@@ -50,7 +52,7 @@
 <div class="divstyle"></div>
 
                 <form id="login" method="post" action="{:url('Index/Index/login')}">
-
+<!--   -->
                              <h1>登录</h1>
 
                          <fieldset id="inputs">
@@ -62,7 +64,7 @@
 
         <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>
               </div>
-              <select class="form-control" name="role">
+              <select class="form-control" id="role" name="role">
                         <option selected>&nbsp;&nbsp;&nbsp;&nbsp;请选择</option>
                         <option value="0">&nbsp;&nbsp;&nbsp;&nbsp;学生</option>
                         <option value="1">&nbsp;&nbsp;&nbsp;&nbsp;超级管理员</option>
@@ -81,7 +83,7 @@
 
         <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
               </div>
-              <input type="text" class="form-control easyui-validatebox" id="username" name="username" placeholder="账号" required="true"  invalidMessage= "请按要求填写账号!"
+              <input type="text" class="form-control easyui-validatebox" id="username"  name="username" placeholder="账号" required="true"  invalidMessage= "请按要求填写账号!"
    size="10">
                   </div>
           </div>
@@ -126,13 +128,70 @@
 
 
 <script type="text/javascript">
-$(function(){
+//禁止回车自动提交
+$('.form-control').keypress(function(e){
+            if(e.keyCode==13){
+                e.preventDefault();
+            }
 
 
-            $('#submitbt').click({
-                    alert('saaaaaaaaaaaaaaaaa');
-                });
+
+$('#submit').click(function(){
+// alert('sdsdds');
+  var username = password = role = identify = false;
+  if ($('#username').val()!='') {
+    username = true;
+  }
+  if ($('#password').val()!='') {
+    password = true;
+  }
+  if ($('#role').val()!='') {
+    role = true;
+  }
+  if ($('#identify').val()!='') {
+    identify = true;
+  }
+
+if (username && password && role && identify ) {
+// alert('assasa');
+
+$('#login').submit();
+
+//                  $.ajax({
+//                    type: "post",
+//                    url: "Index/index/login",
+//                    data: {
+//                     username:$('#username').val(),
+//                     password:$('#password').val(),
+//                     role:$('#role').val(),
+//                     check:$('#identify').val()
+//                             },
+//                     dataType: "json",
+//                     success : function (data) {
+//                           if (data) {
+//                                alert(data);
+//                               }else{
+//                             alert('error');
+//                           console.log(data);
+//                               }
+//                       }
+//                   });
+
+
+// alert('end');
+}
+
+
 
 });
+
+
+
+
+
+
+
+
+
 
 </script>

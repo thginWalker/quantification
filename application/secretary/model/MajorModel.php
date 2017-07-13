@@ -19,12 +19,13 @@ class MajorModel extends Model{
      * @param  [type] $rows [description]
      * @return [type]       [description]
      */
-    public function retrievemajor($page,$rows)
+    public function retrievemajor($page,$rows,$sort)
     {
         $start = ($page-1)*$rows;
         $data = Db::name('Major')
-                       ->limit($start,$rows)//从第10行开始的25条数据
-                       ->select();
+                    ->order($sort,'desc')
+                    ->limit($start,$rows)//从第10行开始的25条数据
+                    ->select();
         return $data;
     }
 

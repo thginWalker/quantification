@@ -19,16 +19,17 @@ class ClassesModel extends Model{
      * @param  [type] $rows [description]
      * @return [type]       [description]
      */
-    public function retrieveclasses($page,$rows)
+    public function retrieveclasses($page,$rows,$sort)
     {
         $start = ($page-1)*$rows;
         $data = Db::name('Classes')
-                       ->limit($start,$rows)//从第10行开始的25条数据
-                       ->select();
+                    ->order($sort,'desc')
+                    ->limit($start,$rows)//从第10行开始的25条数据
+                    ->select();
          foreach ($data as $key => $value) {
             $ids=$value["major_id"];
             $mm=$this->retrievemajor($ids);
-            $data[$key]["major_id"]=$mm;
+            $data[$key]["major_name"]=$mm;
         }
         return $data;
     }

@@ -19,12 +19,12 @@ class StudentModel extends Model{
      * @param  [type] $rows [description]
      * @return [type]       [description]
      */
-    public function retrievestudent($classes_id)
+    public function retrievestudent($classes_id,$page,$rows)
     {
-    
-
+        $start = ($page-1)*$rows;
         $data = Db::name('Student')
                     ->where('classes_id',$classes_id)
+                    ->limit($start,$rows)//从第10行开始的25条数据
                     ->select();
  
         return $data;

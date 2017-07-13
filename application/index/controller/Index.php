@@ -52,7 +52,7 @@ class Index extends Controller
         $check =  input('post.check');
 
         if(!captcha_check($check)){ //验证码判断成功
-          $this->error("验证码错误");
+          $this->error('验证码错误','Index/Index/index');
           exit();
         }
         //判断登录类型进行验证跳转
@@ -152,6 +152,7 @@ class Index extends Controller
           public function clearSession()
           {
             Session::clear();
+            $this->redirect('Index/Index/index');
           }
 
           /**
@@ -194,10 +195,10 @@ class Index extends Controller
                 $this->setSession($name,$role);//设置session
                 $this->judgeSession();//判断是否设置session
                 $this->judgeJump();//进行相应跳转
-
                 } else {
 
                   $this->error("账号或密码错误!");
+                  return false;//账号或密码错误
                 }
           }
 
@@ -208,27 +209,24 @@ class Index extends Controller
           public function judgeJump()
           {
                   if (session("role") == 0) {//学生
-                      $this->success('登录成功', 'Student/Index/index');
+                      $this->redirect('Student/Index/index');
                     } elseif (session("role") == 1) {//超级管理员
-                      $this->success('登录成功', 'Secretary/Index/index');
+                      $this->redirect('Secretary/Index/index');
                     } elseif (session("role") == 2) {//管理员
-                       $this->success('登录成功', 'Admin/Index/index');
+                      $this->redirect('Admin/Index/index');
                     } elseif (session("role") == 3) {//量化委员
-                        $this->success('登录成功', 'Committee/Index/index');
+                      $this->redirect('Committee/Index/index');
                     } elseif (session("role") == 4) {//学生会，不包含秘书处
-                      // echo "4";
-                      echo "我是学生会";
-                      exit;
+                      $this->redirect('Studentunion/Index/index');
                     } elseif (session("role") == 5) {//门户维护员
-                        //
-                        echo "我是门户维修员";
+                      $this->redirect('Gateway/Index/index');
                     }elseif (session("role") == 6) {//秘书处
-                      $this->success('登录成功', 'Secretariat/Index/index');
-                      echo "我是秘书处";
-                      exit;
+                      $this->redirect('Secretariat/Index/index');
                     }else{
                       return false;
                     }
+
+
           }
 
 }

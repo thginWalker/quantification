@@ -2,15 +2,17 @@
 namespace app\secretariat\controller;
 
 
-use think\Controller;
-use think\Model;
+
+use app\common\Common;
+
 
 use app\secretariat\Model\Dynamic;
+use app\secretariat\Model\Studentunion;
 
 use think\View;     //视图类
 use think\Session;
 
-class Index extends Controller
+class Index extends Common
 {
     /**
      * 秘书处模块首页设置
@@ -71,12 +73,78 @@ class Index extends Controller
     echo $result;
   }
 
-  //修改密码
-  public function Modifypwd()
-  {
-        $view = new View();
-       return $view->fetch();
-  }
+ /**
+    * 修改信息首页
+    * @return [type] [description]
+    */
+   public function modifyInfo()
+   {
+       //先查找学生id
+
+      $studentunion = model('Studentunion');
+      $info = $studentunion->selectSecretariat();
+      $view = new View();
+      $view->assign('info',$info);
+
+      return $view->fetch('self');
+   }
+
+   /**
+    * 修改秘书处信息
+    * @return [type] [description]
+    */
+   public function reviseMessage()
+   {
+      $number = input('post.number');
+      $name = input('post.name');
+      $email = input('post.email');
+      $studentunion = model("Studentunion");
+      $result = $studentunion->modifyMessage($number,$name,$email);
+
+       if($result){
+       $this->success('修改成功','Secretariat/Index/modifyInfo');
+      }else{
+        $this->error('修改失败','Secretariat/Index/modifyInfo');
+      }
+   }
+
+   /**
+    * 修改密码首页
+    * @return [type] [description]
+    */
+   public function modifyPass()
+   {
+       $view = new View();
+       // $view->assign('classid',$classid);
+      return $view->fetch('password');
+   }
+
+   /**
+    * 修改密码信息
+    */
+
+   public function revisePwd()
+   {
+
+      $oldpassword =  input('post.oldpassword');
+      $password =  md5(input('post.password'));
+       $Studentunion = model("Studentunion");
+       $data = $studentunion->studentPwd();
+////////////////////////////////////////////////模型里面实例化数据表的问题////需修改
+            if( md5($oldpassword) == $data['nt_password'])
+            {
+                $result = $studentunion->modifyPwd($password);
+                if($result){
+                     $this->success('修改成功','Secretariat/Index/modifyPass');
+                }else{
+                    $this->error('修改失败','Secretariat/Index/modifyPass');
+                }
+            }else{
+
+                $this->error('原密码错误','Secretariat/Index/modifyPass');
+
+            }
+   }
 
 
 }

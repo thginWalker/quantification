@@ -66,9 +66,12 @@ class Index extends Controller{
             $message = model("SecretaryModel");
             $data = $message->retrieve(1);
             $pwd = $data[0]['ad_password'];
-
-            if( input('post.oldpassword') == $pwd){
-                $res = $message->modifypass();
+            $oldpassword = input('post.oldpassword');
+            $oldpassword = md5($oldpassword);
+            $password = input('post.password');
+            $password = md5($password);
+            if( $oldpassword == $pwd){
+                $res = $message->modifypass($password);
                 if($res){
                      $this->success('修改成功','Index/modifypassword');
                 }else{
@@ -93,10 +96,11 @@ class Index extends Controller{
      * @return [type] [description]
      */
     public function majormessage(){
-         $page = isset($_POST['page'])?intval($_POST['page']):1;//默认页码
+        $sort =  input('post.sort');
+        $page = isset($_POST['page'])?intval($_POST['page']):1;//默认页码
         $rows = isset($_POST['rows'])?intval($_POST['rows']):5;//默认行数
         $major = model('MajorModel');
-        $result = $major->retrievemajor($page,$rows);
+        $result = $major->retrievemajor($page,$rows,$sort);
         $result = json_encode($result);
         $total = $major->countmajor();
         $result = substr($result, 0, -1);
@@ -133,7 +137,6 @@ class Index extends Controller{
         $majorname = input('post.majorname');
         $remarks = input('post.remarks');
         $abbreviation = input('post.abbreviation');
-
         $major = model('MajorModel');
           $result = $major->editmajor($id,$majorname,$abbreviation,$remarks);
         if ($result) {
@@ -170,15 +173,8 @@ class Index extends Controller{
         $t = count($data);
         for($i=0;$i<$t;$i++){
             $s[$i]= "{"."value".":"."'".$data[$i]["Id"]."'".","."text".":"."'".$data[$i]["ma_majorname"]."'"."}";
-            // $m[$i]="case"." ".$data[$i]["Id"].":"."return"." "."\"".$data[$i]["ma_majorname"]."\"".";"."break;";
+
         }
-    // $str = '';
-    //     foreach ($m as $key => $value) {
-    //         $str = $str.$value;
-    //     }
-        
-        // $str = "switch(value){".$str."default:"."return"." "."\""."ssss"."\"".";}";
-        //  var_dump($str);
         $name = $classes->queryheadmaster();
         //$n = count($name);
         foreach ($name as $key => $value) {
@@ -187,7 +183,6 @@ class Index extends Controller{
        }
        $this->assign('data',$s);
        $this->assign('name',$name);
-       //$this->assign('m',$str);
        $this->assign('ban',$ban);
         return $this->fetch('grade');
 
@@ -197,10 +192,11 @@ class Index extends Controller{
     * @return [type] [description]
     */
        public function classmessage(){
-         $page = isset($_POST['page'])?intval($_POST['page']):1;//默认页码
+        $sort =  input('post.sort');
+        $page = isset($_POST['page'])?intval($_POST['page']):1;//默认页码
         $rows = isset($_POST['rows'])?intval($_POST['rows']):25;//默认行数
         $classes = model('ClassesModel');
-        $result = $classes->retrieveclasses($page,$rows);
+        $result = $classes->retrieveclasses($page,$rows,$sort);
         $result = json_encode($result);
         $total = $classes->countclasses();
         $result = substr($result, 0, -1);
@@ -236,7 +232,13 @@ class Index extends Controller{
     public function editclasses(){
          $id =  input('post.Id');
         $cl_grade = input('post.cl_grade');
-        $major_id = input('post.major_id');
+        $major = input('post.major_name');
+        $sign = is_numeric($major);
+        if($sign){
+            $major_id = $major;
+        }else{
+            $major_id = input('post.major_id');
+        }
         $cl_classes = input('post.cl_classes');
         $cl_headmaster = input('post.cl_headmaster');
         $cl_remarks = input('post.cl_remarks');
@@ -276,10 +278,11 @@ class Index extends Controller{
      * @return [type] [description]
      */
 public function headmastermessage(){
-         $page = isset($_POST['page'])?intval($_POST['page']):1;//默认页码
+        $sort =  input('post.sort');
+        $page = isset($_POST['page'])?intval($_POST['page']):1;//默认页码
         $rows = isset($_POST['rows'])?intval($_POST['rows']):5;//默认行数
         $classes = model('HeadmasterModel');
-        $result = $classes->retrieveheadmaster($page,$rows);
+        $result = $classes->retrieveheadmaster($page,$rows,$sort);
         $result = json_encode($result);
         $total = $classes->countheadmaster();
         $result = substr($result, 0, -1);
@@ -318,7 +321,7 @@ public function headmastermessage(){
         $ad_email = input('post.email');
         $ad_remarks = input('post.remarks');
         $major = model('HeadmasterModel');
-          $result = $major->editheadmaster($Id,$ad_number,$ad_name,$ad_sex,$ad_email,$ad_remarks);
+        $result = $major->editheadmaster($Id,$ad_number,$ad_name,$ad_sex,$ad_email,$ad_remarks);
         if ($result) {
              echo "操作成功";
            } else {
@@ -344,14 +347,16 @@ public function headmastermessage(){
      * @return [type] [description]
      */
     public function student(){
-        $id=input('post.classid');
-        $student = model('StudentModel');
-        $result = $student->retrievestudent($id);
-        $total = $student->countstudent();
-        $information = [];//传递保存数据
-        $information['data'] = $result;
-        $information['total'] = $total;
-        $result = $this->toJson($code = '200', $message = '数据正确', $information);
+        $id=input('get.classid');
+        $page = isset($_POST['page'])?intval($_POST['page']):1;//默认页码
+        $rows = isset($_POST['rows'])?intval($_POST['rows']):5;//默认行数
+        $classes = model('StudentModel');
+        $result = $classes->retrievestudent($id,$page,$rows);
+        $result = json_encode($result);
+        $total = $classes->countstudent();
+        $result = substr($result, 0, -1);
+        $result = '{"total" : '.$total.', "rows" : '.$result.']}';
+        // var_dump($result);
         echo $result;
     }
     /**
@@ -386,8 +391,8 @@ public function headmastermessage(){
         $nt_idnumber = input('post.nt_idnumber');
         $nt_email = input('post.nt_email');
         $nt_remarks = input('post.nt_remarks');
-        $major = model('StudentModel');
-          $result = $major->editstudent($Id,$nt_number,$nt_name,$nt_sex,$nt_idnumber,$nt_email,$nt_remarks);
+        $student = model('StudentModel');
+        $result = $student->editstudent($Id,$nt_number,$nt_name,$nt_sex,$nt_idnumber,$nt_email,$nt_remarks);
         if ($result) {
              echo "操作成功";
            } else {
@@ -403,6 +408,79 @@ public function headmastermessage(){
         $ids = input('post.ids');
         $student = model('studentModel');
         $result = $student->deletestudent($ids);
+       if ($result) {
+         echo "$result";
+       } else {
+         echo "0";
+       }
+    }
+    //秘书处
+    public function Secretariat(){
+        $message = model("Secretariat");
+        $data = $message->retrieve();
+        $this->assign("message",$data);
+        return $this->fetch('secretariat');
+    }
+    //接受秘书处信息
+    public function Secretariatmessage(){
+        $message = model("Secretariat");
+        $res = $message->modify();
+         if($res){
+         $this->success('修改成功','Index/secretariat');
+        }else{
+          $this->error('修改失败','Index/secretariat');
+        }
+    }
+    //学生会
+    public function studentunion(){
+        return $this->fetch('studentunion');
+    }
+     public function studentunionmessage(){
+        $sort =  input('post.sort');
+        $page = isset($_POST['page'])?intval($_POST['page']):1;//默认页码
+        $rows = isset($_POST['rows'])?intval($_POST['rows']):5;//默认行数
+        $studentunion = model('Studentunion');
+        $result = $studentunion->retrieveStudentunion($page,$rows,$sort);
+        $result = json_encode($result);
+        $total = $studentunion->countstudentunion();
+        $result = substr($result, 0, -1);
+        $result = '{"total" : '.$total.', "rows" : '.$result.']}';
+    // var_dump($result);
+    echo $result;
+
+    }
+    //添加学生会
+    public function addstudentunion(){
+        $on_department = input('post.on_department');
+        $on_number = input('post.on_number');
+        $on_email = input('post.on_email');
+        $on_remarks = input('post.on_remarks');
+        $studentunion = model('Studentunion');
+          $result = $studentunion->addstudentunion($on_department,$on_number,$on_email,$on_remarks);
+        if ($result>0) {
+             echo "操作成功";
+           } else {
+             echo "操作失败";
+           }
+    }
+    public function editstudentunion(){
+        $id = input('post.Id');
+        $on_department = input('post.on_department');
+        $on_number = input('post.on_number');
+        $on_email = input('post.on_email');
+        $on_remarks = input('post.on_remarks');
+         $studentunion = model('Studentunion');
+          $result = $studentunion->editstudentunion($id,$on_department,$on_number,$on_email,$on_remarks);
+        if ($result) {
+             echo "操作成功";
+           } else {
+             echo "操作失败";
+           }
+    }
+    public function deletestudentunion(){
+        $ids = input('post.ids');
+        $studentunion = model('Studentunion');
+        $result = $studentunion->deletetstudentunion($ids);
        if ($result) {
          return $result;
        } else {

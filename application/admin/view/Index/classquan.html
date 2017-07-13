@@ -4,7 +4,12 @@
 {load href="/quantification/public/static/admin/Index/classquan.js" /}
 
 {load href="/quantification/public/static/admin/Index/quan_details.js" /}
+<style type="text/css">
 
+    body{
+        padding: 20px;
+    }
+</style>
 <body>
 <div style="margin-bottom:10px;padding:5px;" id="tb">
         <a href="#" class="easyui-linkbutton"  data-options="iconCls:'icon-edit',plain:true"  onclick="details()" id="edit">详情</a>
@@ -14,7 +19,7 @@
     <div style="margin-bottom:10px;padding:5px;" id="tb"><!-- plain:true 按钮扁平化-->
         <input type="hidden" id="classid" name="classid" value="{$classid}"><!--- 隐藏域传递ID-->
     </div>
-    <table id="tt" class="easyui-datagrid" style="width:980px;">
+    <table id="tt" style="width:980px;">
     </table>
 
 
