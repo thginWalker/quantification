@@ -459,6 +459,22 @@ class Index extends Common
             }
    }
 
+    /**
+      * 联系我们
+      * @return [type] [description]
+    */
+    public function contact(){
+        return $this->fetch();
+    }
+
+    /**
+     * 退出登录
+     * @return [type] [description]
+     */
+    public function signout(){
+       $this->redirect('Index/Index/clearSession');
+    }
+
 
     /**
      * 返回json数据
