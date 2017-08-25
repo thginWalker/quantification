@@ -1,47 +1,63 @@
 {include file="../public/static/head.html" /}
 {load href="/quantification/public/static/Secretary/css/index.css" /}
-{load href="/quantification/public/static/Secretary/js/index.js" /}
 {load href="/quantification/public/static/Secretary/css/secreatary.css" /}
- 
+{load href="/quantification/public/static/Secretary/js/index.js" /}
+
 </head>
 <body>
 
             <!--容器-->
             <div id='box' class="easyui-layout"  >
 
-                        <div  data-options="region:'north',collapsible:false,title:'<div id=aa>huang</div><div id=a>营</div>'"  ></div>
-
+                        <!--上部-->
+                        <div id="north" region='north' collapsible='false' title="">
+                                    <div id=left></div>
+                                    <div id=right>
+                                          <ul>
+                                               <!--  <li><a href='#' id='a1'>帮助</a></li> -->
+                                                <li><a href='#' id='a2'>联系我们</a></li>
+                                                <li><a href='signout'>退出登录</a></li>
+                                          </ul>
+                                    </div>
+                        </div>
                         <!--左-->
-                        <div id="west" data-options="region:'west',title:'部门信息',iconCls:'icon-man',split:true" >
+                        <div id="west" data-options="region:'west',title:'用户管理',iconCls:'icon-man',split:true" >
                                     
                                     <!--手风琴折叠菜单-->
                                     <div id="aa" class="easyui-accordion" data-options="multiple:true" >
                                                 
                                                 <!--菜单项1-->
-                                                <div id="link" title="审核分数"  >
+                                                <div id="link" title="分数管理"  >
                                                             <ul>
-                                                                        <li ><a href="#" onclick="addTab('审核分数','fraction')"><button>审核分数</button></a></li>
+                                                                       <li ><a href="#" onclick="addTab('审核分数','fraction')"><button>审核分数</button></a></li>
                                                                         <li ><a href="#" onclick="addTab('添加分数','stufraction')"><button>添加分数</button></a></li>
                                                         </ul>
                                                 </div>
 
                                                 <!--菜单项2-->
-                                                <div id="link"  title="专业班级"  > 
+                                                <!-- <div id="link"  title="专业班级"  > 
                                                             <ul>                        
-                                                                        <li><a href="#"  onclick="addTab('专业信息','major.html')"><button>专业信息</button></a></li>
-                                                                        <li><a href="#" onclick="addTab('年级信息','grade.html')"><button>年级信息</button></a></li>
+                                                                        <li><a href="#"  onclick="addTab('专业信息','major')"><button>专业信息</button></a></li>
+                                                                        <li><a href="#" onclick="addTab('年级信息','grade')"><button>年级信息</button></a></li>
                                                             </ul>
 
-                                                </div>
+                                                </div> -->
 
                                                 <!--菜单项3-->
-                                                <div id="link"  title="班主任" >
+                                                <!-- <div id="link"  title="学生会" >
                                                             <ul>
-                                                                        <li><a href=""  onclick="addTab('分配班主任','#')"><button>分配班主任</button></a></li>
-                                                                        <li><a href=""  onclick="addTab('分配班级','#')"><button>分配班级</button></a></li>
+                                                                        <li><a href="#"  onclick="addTab('秘书处','secretariat')"><button>秘书处</button></a></li>
+                                                                        <li><a href="#"  onclick="addTab('学生会','studentunion')"><button>学生会</button></a></li>
                                             
                                                             </ul>
-                                                </div>
+                                                </div> -->
+                                               <!--  <div id="link"  title="班主任" >
+                                                            <ul>
+                                                                        <li><a href="#"  onclick="addTab('分配班主任','headmaster')"><button>分配班主任</button></a></li>
+                                                                        
+                                            
+                                                            </ul>
+                                                </div> -->
 
 
                                     </div>      
@@ -54,10 +70,28 @@
                                     <div id="tt" class="easyui-tabs" fit='true' >
                                                 <!--主页-->
                                                 <div id='home' title="主页" fit='true'   >
-                                                
-                                                            <div id='hello'> <img src="hello.png" alt=""></div>
+                                                      <div id="cell">
+                                                            <div class="cell-1"><img src="/quantification/public/static/img/p1.png" alt="" title="生命的全部的意义在于无穷地探索尚未知道的东西。--左拉"></div>
+                                                            <div class="cell-2"><img src="/quantification/public/static/img/p2.png" alt="" title="知之愈明,则行之愈笃；行之愈笃,则知之益明。--朱熹"> </div>
+                                                            <div class="cell-3"><img src="/quantification/public/static/img/p3.png" alt="" title="读书使人心明眼亮。 -- 伏尔泰" ></div>
+                                                            <div class="cell-4">
+                                                                  <div class="easyui-calendar" style="width:250px;height:200px;"></div>
+                                                            </div>
+                                                            <div class="cell-5"><img src="/quantification/public/static/img/mhwk.png" alt=""></div>
+                                                            <div class="cell-6">
 
+                                                             <p style="font-size:1.5em;margin-top:10px;">友情链接</p>
+                                                                  <ul>
+                                                                        <li><a href="http://www.wfust.edu.cn/" target="blank">潍坊科技学院官网</a></li>
+                                                                        <li><a href="http://123.232.119.49:8080/" target="blank">软件学院官网</a></li>
+                                                                        <li><a href="http://jwgl.wfkjxy.com.cn/" target="blank">教务管理系统</a></li>
+                                                                        
+                                                                  </ul>
 
+                                                            </div>
+
+                                                      </div>
+                                                      
                                                 </div>
                                                       
                                     </div>
@@ -76,6 +110,29 @@
                         
             </div>
  
+       <script>
 
+
+
+            function addTab(title, url){
+                  console.log('');
+                  if ($('#tt').tabs('exists', title)){
+                        $('#tt').tabs('select', title);
+                  } else {
+                        var content = '<iframe  frameborder="0"  src="'+url+'" style="width:100%;height:100%;"></iframe>';
+                        $('#tt').tabs('add',{
+                              title:title,
+                              content:content,
+                              closable:true,
+      
+                        });
+                  }
+            }
+
+            $('#tt').tabs({
+                        fit:true,
+                  });
+
+      </script>
 </body>
 </html>

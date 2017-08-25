@@ -26,12 +26,20 @@ class Classes extends Model
         $grade = [];
 
                foreach($data as $key=>$value){
+
                 $sub_cl_grade = substr($value['cl_grade'], 2, 2);
-                    $grade[$key]['class'] = "{$sub_cl_grade}级{$value['cl_abbreviation']}{$value['cl_classes']}班";
+                    $major = $this->selectMajor($value['major_id'])['ma_abbreviation'];
+                    $grade[$key]['class'] = "{$sub_cl_grade}级$major{$value['cl_classes']}班";
                     $grade[$key]['Id'] = $value['Id'];
 
                 }
         return $grade;
+    }
+    public function selectMajor($major_id){
+        $major = Db::name('Major');
+        $data = $major->where('Id',$major_id)
+                ->find();
+        return $data;
     }
 
 }

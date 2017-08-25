@@ -9,80 +9,121 @@
             <!--容器-->
             <div id='box' class="easyui-layout"  >
 
-                        <div  data-options="region:'north',collapsible:false,title:'<div id=aa>huang</div><div id=a>营</div>'"  ></div>
-
-                        <!--左-->
-                        <div id="west" data-options="region:'west',title:'用户管理',iconCls:'icon-man',split:true" >
-                                    
-                                    <!--手风琴折叠菜单-->
-                                    <div id="aa" class="easyui-accordion" data-options="multiple:true" >
-                                                
-                                                <!--菜单项1-->
-                                                <div id="link" title="个人信息"  >
-                                                            <ul>
-                                                                        <li ><a href="#" onclick="addTab('修改信息','revise')"><button>修改信息</button></a></li>
-                                                                        <li ><a href="#" onclick="addTab('修改密码','modifypassword')"><button>修改密码</button></a></li>
-                                                        </ul>
-                                                </div>
-
-                                                <!--菜单项2-->
-                                                <div id="link"  title="专业班级"  > 
-                                                            <ul>                        
-                                                                        <li><a href="#"  onclick="addTab('专业信息','major')"><button>专业信息</button></a></li>
-                                                                        <li><a href="#" onclick="addTab('年级信息','grade')"><button>年级信息</button></a></li>
-                                                            </ul>
-
-                                                </div>
-
-                                                <!--菜单项3-->
-                                                <div id="link"  title="学生会" >
-                                                            <ul>
-                                                                        <li><a href="#"  onclick="addTab('秘书处','secretariat')"><button>秘书处</button></a></li>
-                                                                        <li><a href="#"  onclick="addTab('学生会','studentunion')"><button>学生会</button></a></li>
-                                            
-                                                            </ul>
-                                                </div>
-                                                <div id="link"  title="班主任" >
-                                                            <ul>
-                                                                        <li><a href="#"  onclick="addTab('分配班主任','headmaster')"><button>分配班主任</button></a></li>
-                                                                        
-                                            
-                                                            </ul>
-                                                </div>
-
-
-                                    </div>      
+                        <!--上部-->
+                        <div id="north" region='north' collapsible='false' title="">
+                                    <div id=left></div>
+                                    <div id=right>
+                                          <ul>
+                                                <!-- <li><a href='#' id='a1'>帮助</a></li> -->
+                                                <li><a href='#' id='a2'>联系我们</a></li>
+                                                <li><a href='signout'>退出登录</a></li>
+                                          </ul>
+                                    </div>
                         </div>
+                        <!--左-->
+                                       <!--左-->
+            <div id="west" data-options="region:'west',iconCls:'icon-man',title:'班主任',split:true">
+                  <!--折叠菜单-->
+                  <div id="aa" class="easyui-accordion" data-options="multiple:true">
+                        <!--菜单项-->
+                        <div id="link" title="班级人员管理">
+                              <ul>
+                              <!-- 根据管理班级进行添加-->
+                                {volist name="grade" id="vo"}
+                                 <li><a href="#" onclick="addTab('{$vo.class}人员','classStaff?id={$vo.Id}')"><button>{$vo.class}</button></a></li>
+                                {/volist}
+                                </ul>
+                        </div>
+                         <div id="link" title="量化委员管理">
+                              <ul>
+                                <!-- 根据管理班级进行添加-->
+                                {volist name="grade" id="vo"}
+                                 <li><a href="#" onclick="addTab('{$vo.class}委员','Committee?id={$vo.Id}')"><button>{$vo.class}</button></a></li>
+                                {/volist}
+                                </ul>
 
-                        
+                        </div>
+                         <div id="link" title="班级量化管理">
+                              <ul>
+                              <!-- 根据管理班级进行添加-->
+                                {volist name="grade" id="vo"}
+                                 <li><a href="#" onclick="addTab('{$vo.class}量化','classQuantification?id={$vo.Id}')"><button>{$vo.class}</button></a></li>
+                                {/volist}
+
+                              </ul>
+
+                        </div>
+                        <div id="link" title="上周量化管理">
+                              <ul>
+                                <!-- 根据管理班级进行添加-->
+                                {volist name="grade" id="vo"}
+                                 <li><a href="#" onclick="addTab('{$vo.class}每周','weeklyQuantification?id={$vo.Id}')"><button>{$vo.class}</button></a></li>
+                                {/volist}
+
+                             </ul>
+                        </div>
+                        <div id="link" title="上月量化管理">
+                              <ul>
+                               {volist name="grade" id="vo"}
+                                 <li><a href="#" onclick="addTab('{$vo.class}每月','monthlyQuantification?id={$vo.Id}')"><button>{$vo.class}</button></a></li>
+                                {/volist}
+                             </ul>
+                        </div>
+                         <div id="link" title="个人用户管理">
+                              <ul>
+                                 <li><a href="#" onclick="addTab('修改信息','modifyInfo')"><button>修改信息</button></a></li>
+                                 <li><a href="#" onclick="addTab('修改密码','modifyPass')"><button>修改密码</button></a></li>
+                             </ul>
+                        </div>
+                  </div>
+            </div>
+
                         <!--中间-->
                         <div id='middle' data-options="region:'center'" >
                                     <!--选项卡-->
                                     <div id="tt" class="easyui-tabs" fit='true' >
                                                 <!--主页-->
                                                 <div id='home' title="主页" fit='true'   >
-                                                
-                                                            <div id='hello'> <img src="hello.png" alt=""></div>
+                                                      <div id="cell">
+                                                            <div class="cell-1"><img src="/quantification/public/static/img/p1.png" alt="" title="生命的全部的意义在于无穷地探索尚未知道的东西。--左拉"></div>
+                                                            <div class="cell-2"><img src="/quantification/public/static/img/p2.png" alt="" title="知之愈明,则行之愈笃；行之愈笃,则知之益明。--朱熹"> </div>
+                                                            <div class="cell-3"><img src="/quantification/public/static/img/p3.png" alt="" title="读书使人心明眼亮。 -- 伏尔泰" ></div>
+                                                            <div class="cell-4">
+                                                                  <div class="easyui-calendar" style="width:250px;height:200px;"></div>
+                                                            </div>
+                                                            <div class="cell-5"><img src="/quantification/public/static/img/mhwk.png" alt=""></div>
+                                                            <div class="cell-6">
 
+                                                             <p style="font-size:1.5em;margin-top:10px;">友情链接</p>
+                                                                  <ul>
+                                                                        <li><a href="http://www.wfust.edu.cn/" target="blank">潍坊科技学院官网</a></li>
+                                                                        <li><a href="http://123.232.119.49:8080/" target="blank">软件学院官网</a></li>
+                                                                        <li><a href="http://jwgl.wfkjxy.com.cn/" target="blank">教务管理系统</a></li>
+
+                                                                  </ul>
+
+                                                            </div>
+
+                                                      </div>
 
                                                 </div>
-                                                      
+
                                     </div>
-                                    
+
                         </div>
 
 
 
                         <!--下部-->
                         <div  id='south' data-options="region:'south'" >
-                                    
+
                                     <div id='foot'>
                                     版权所有：潍坊千行信息科技有限公司 地址：山东省寿光市金光街潍坊科技学院 电话：0536-5101992 邮编：262700
                                     </div>
                         </div>
-                        
+
             </div>
- 
+
        <script>
 
 
@@ -97,7 +138,7 @@
                               title:title,
                               content:content,
                               closable:true,
-      
+
                         });
                   }
             }

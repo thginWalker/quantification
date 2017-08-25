@@ -1,4 +1,5 @@
 {include file="../public/static/head.html" /}
+{load href="/quantification/public/static/student/Index/js/self.js" /}
 <style type="text/css">
     body{
         padding: 20px;
@@ -13,7 +14,7 @@
 
 </head>
 <body>
-    <div class="easyui-panel" title="New Topic" style="width:400px">
+    <div class="easyui-panel" title="修改信息" style="width:400px">
       <div style="padding:10px 60px 20px 60px">
        <form id="self" method="post" action="{:url('Student/Index/reviseMessage')}">
         <input type="hidden" value="{$info.nt_sex}" id="sex">
@@ -49,7 +50,7 @@
        </div>
        </div>
    </div>
-{load href="/quantification/public/static/Secretary/js/self.js" /}
+
 
 </body>
 </html>

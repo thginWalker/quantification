@@ -2,6 +2,7 @@
 //量化委员模块控制器
 namespace app\committee\controller;
 
+use \app\common\Common;
 use \think\Controller;
 use \think\Model;
 use \think\Response;
@@ -11,7 +12,7 @@ use  app\committee\model\committeeModel;
 use think\View;     //视图类
 use think\Session;
 
-class Index extends Controller{
+class Index extends Common{
 
    /**
     * 首页
@@ -107,6 +108,14 @@ class Index extends Controller{
            }
 
    }
+    //联系我们
+    public function contact(){
+        return $this->fetch();
+    }
+    public function signout(){
+        var_dump("expression");
+       $this->redirect('Index/Index/clearSession');
+    }
     /**
      * 返回json数据
      * @param  string $code    [description]
